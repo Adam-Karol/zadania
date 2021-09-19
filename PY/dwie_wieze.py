@@ -11,36 +11,13 @@ def wczytaj_poz():
     k2 = Pozycja(int(ord(temp2[0]) - 96), int(temp2[1]))
     return k1, k2
 
-
-def oblicz_ataki(wieza):
-    ataki = []
-
-    for i in range(wieza.x, 9):
-        atak = Pozycja(i, wieza.y)
-        ataki.append(atak)
-    for i in range(0, wieza.x):
-        atak = Pozycja(i, wieza.y)
-        ataki.append(atak)
-    for i in range(wieza.y, 9):
-        atak = Pozycja(wieza.x, i)
-        ataki.append(atak)
-    for i in range(0, wieza.y):
-        atak = Pozycja(wieza.x, i)
-        ataki.append(atak)
-
-    return ataki
-
 def main():
     k1, k2 = wczytaj_poz()
-
-    ataki = oblicz_ataki(k1)
-
-    for i in ataki:
-        if i.x == k2.x and i.y == k2.y:
-            print("TAK")
-            return
+    
+    if k1.x == k2.x or k1.y == k2.y:
+        print("TAK")
+        quit()
 
     print("NIE")
-
 
 main()
