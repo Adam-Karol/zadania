@@ -17,5 +17,9 @@ if numer[0] == "+":
         quit()
     print(numer)
     quit()
+if len(numer) > 10:
+    numer = "+48" + numer[-9:]
+    print(numer)
+    quit()
 numer = numer[-9:]
 print(numer)
