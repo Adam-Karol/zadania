@@ -1,2 +1,4 @@
 # zadania
-Zadania z Pythona i C++
+
+Zadania z Pythona i C++.
+
