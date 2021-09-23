@@ -1,10 +1,10 @@
 #include <iostream>
 using namespace std;
 
-int wyjscie;
-string wejscie;
 int main()
 {
+    int wyjscie;
+    string wejscie;
     while(cin >> wejscie)
     {
         for (int i = 0; i < wejscie.length(); i++)
