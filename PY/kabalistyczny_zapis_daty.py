@@ -1,54 +1,9 @@
 n = input()
-ile = 0
 wyjscie = 0
+slownik = {'a': 1, 'b': 2, 'c': 3, 'd': 4, 'e': 5, 'f': 6, 'g': 7, 'h': 8, 'i': 9, 'k': 10, 'l': 20, 'm': 30, 'n': 40, 'o': 50, 'p': 60, 'q': 70, 'r': 80, 's': 90, 't': 100, 'v': 200, 'x': 300, 'y': 400, 'z': 500}
 
-for i in range(len(n)):
-    if n[i] == 'a':
-        wyjscie += 1
-    if n[i] == 'b':
-        wyjscie += 2
-    if n[i] == 'c':
-        wyjscie += 3
-    if n[i] == 'd':
-        wyjscie += 4
-    if n[i] == 'e':
-        wyjscie += 5
-    if n[i] == 'f':
-        wyjscie += 6
-    if n[i] == 'g':
-        wyjscie += 7
-    if n[i] == 'h':
-        wyjscie += 8
-    if n[i] == 'i':
-        wyjscie += 9
-    if n[i] == 'k':
-        wyjscie += 10
-    if n[i] == 'l':
-        wyjscie += 20
-    if n[i] == 'm':
-        wyjscie += 30
-    if n[i] == 'n':
-        wyjscie += 40
-    if n[i] == 'o':
-        wyjscie += 50
-    if n[i] == 'p':
-        wyjscie += 60
-    if n[i] == 'q':
-        wyjscie += 70
-    if n[i] == 'r':
-        wyjscie += 80
-    if n[i] == 's':
-        wyjscie += 90
-    if n[i] == 't':
-        wyjscie += 100
-    if n[i] == 'v':
-        wyjscie += 200
-    if n[i] == 'x':
-        wyjscie += 300
-    if n[i] == 'y':
-        wyjscie += 400
-    if n[i] == 'z':
-        wyjscie += 500
+for i in n:
+    wyjscie += slownik[i]
 
 print(wyjscie)
 quit()
