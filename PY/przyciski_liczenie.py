@@ -10,14 +10,20 @@ class OknoZPolamiTekstowymi:
         self.okno = Gtk.Window()
         self.okno.set_title("ZLICZANIE")
         self.okno.resize(500, 350)
+        
+        self.box = Gtk.VBox();
 
         self.przycisk1 = Gtk.Button(label='LEWY P.')
         self.przycisk2 = Gtk.Button(label='PRAWY P.')
 
-        self.box = Gtk.HBox();
-        self.subbox = Gtk.VBox();
-        self.box.pack_start(self.subbox, True, True, 20)
+        self.subbox1 = Gtk.HBox();
+        self.subbox2 = Gtk.HBox();
+        self.box.pack_start(self.subbox1, True, True, 20)
+        self.box.pack_start(self.subbox2, True, True, 20)
         self.okno.add(self.box)
+        
+        self.subbox2.pack_start(self.przycisk1, True, True, 20)
+        self.subbox2.pack_start(self.przycisk2, True, True, 20)
 
         self.okno.connect("delete-event", Gtk.main_quit)
         self.przycisk1.connect("button-press-event", self.on_button_press1)
@@ -25,28 +31,21 @@ class OknoZPolamiTekstowymi:
 
         self.licz1 = 0
         self.licz2 = 0
-	
-        self.rightbox = Gtk.VBox()
-        self.subbox.pack_start(self.rightbox, True, True, 20)
-        self.rightbox.pack_start(self.przycisk1, True, True, 20)
-        self.rightbox.pack_start(self.przycisk2, True, True, 20)
 
-        self.leftbox = Gtk.VBox()
-        self.subbox.pack_start(self.leftbox, True, True, 20)
-
-        # TEXTVIEW #
+        # SUBBOX 1 #
         self.textview = Gtk.TextView() # Utworzenie obiektu do wyświetlania tekstu.
         self.textview.set_editable(False) # Wyłączenie możliwości edycji tego pola.
         self.buffer = Gtk.TextBuffer() # Utworznie obiektu bufora przechowującego tekst, który ma się wyświetlać.
         self.textview.set_buffer(self.buffer) # Podłączenie bufora do naszego pola do wyświetlania tesktu.
-        self.leftbox.pack_start(self.textview, False, False, 20) # Dodanie textview do okna.
+        self.subbox1.pack_start(self.textview, True, True, 20) # Dodanie textview do okna.
         
         
         self.textview2 = Gtk.TextView() # Utworzenie obiektu do wyświetlania tekstu.
         self.textview2.set_editable(False) # Wyłączenie możliwości edycji tego pola.
         self.buffer2 = Gtk.TextBuffer() # Utworznie obiektu bufora przechowującego tekst, który ma się wyświetlać.
         self.textview2.set_buffer(self.buffer2) # Podłączenie bufora do naszego pola do wyświetlania tesktu.
-        self.leftbox.pack_start(self.textview2, False, False, 20) # Dodanie textview do okna.
+        self.subbox1.pack_start(self.textview2, True, True, 20) # Dodanie textview do okna.
+        
 
 
         self.okno.show_all()
