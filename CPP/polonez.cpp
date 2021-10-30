@@ -14,12 +14,11 @@ int main()
 
 int wynik(vector<int> klasy)
 {
-    int temp = 0;
     int dziewczyny = 0, chlopcy = 0;
     string imie;
     for (int i = 0; i < 3; i++)
     {
-        for (int j = 0; j < klasy[temp]; j++)
+        for (int j = 0; j < klasy[i]; j++)
         {
             cin >> imie;
             if (imie.back() == 'a')
@@ -31,7 +30,6 @@ int wynik(vector<int> klasy)
                 chlopcy += 1;
             }
         }
-        temp += 1;
     }
     if (dziewczyny > chlopcy)
     {
