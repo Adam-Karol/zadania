@@ -3,6 +3,16 @@
 #include <algorithm>
 using namespace std;
 
+template <typename x>
+
+bool find(vector<x> lista, x zmienna)
+{
+    for(int i : lista)
+        if(i == zmienna)
+            return true;
+    return false;
+}
+
 int main()
 {
     int l_liter;
@@ -23,8 +33,7 @@ int main()
 
     for(char i : slowo)
     {
-        vector<char>::iterator it;
-        if ( ( it = std::find( litery.begin(), litery.end(), i)) != litery.end())
+        if(find(litery, i))
         {
             wyjscie += i;
             wyjscie += i;
