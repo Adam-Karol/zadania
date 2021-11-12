@@ -1,80 +1,70 @@
 #include <iostream>
-#include <vector>
+#include <string>
 #include <time.h>
+
 using namespace std;
-
-enum nagroda
-{
-    stopien1,
-    stopien2,
-    stopien3
-};
-
-string enum_na_napis(nagroda in)
-{
-    switch (in)
-    {
-        case stopien1:
-            return "STOPIEN 1.";
-        case stopien2:
-            return "STOPIEN 2.";
-        case stopien3:
-            return "STOPIEN 3.";
-    }
-}
 
 class Student
 {
 protected:
     string imie, nazwisko;
     unsigned rok_urodzenia;
-    vector<float> tablica_ocen;
+    float* oceny;
+    int rozmiar;
 
 public:
-    Student(string imie, string nazwisko, unsigned rok_urodzenia, vector<float> tablica_ocen)
+    Student(string imie, string nazwisko, unsigned rok_urodzenia, float* tablica, int rozmiar)
     {
         this->imie = imie;
         this->nazwisko = nazwisko;
         this->rok_urodzenia = rok_urodzenia;
-        this->tablica_ocen = tablica_ocen;
+        //this->tablica_ocen = tablica_ocen;
+
+        this->rozmiar = rozmiar;
+        this->oceny = new float[rozmiar];
+        for (int i = 0; i < rozmiar; i++)
+            this->oceny[i] = tablica[i];
+
+    }
+
+    ~Student() // destruktor
+    {
+        delete[] this->oceny;
     }
 
     int wiek()
     {
-        return (time(0) / 60 / 60 / 24 / 365 + 1970) - rok_urodzenia;
+        return (time(nullptr) / 60 / 60 / 24 / 365 + 1970) - this->rok_urodzenia;
     }
 
     float srednia_ocen()
     {
         float wynik = 0;
-        for(int i = 0; i < this->tablica_ocen.size(); i++)
-        {
-            wynik += this->tablica_ocen[i];
-        }
-        return wynik/this->tablica_ocen.size();
+        for(int i = 0; i < this->rozmiar; i++)
+            wynik += this->oceny[i];
+
+        return wynik / this->rozmiar;
     }
 
     float najlepsza_ocena()
     {
         float naj = 0;
-        for(int i = 0; i < this->tablica_ocen.size(); i++)
-        {
-            if(naj < tablica_ocen[i])
-            {
-                naj = tablica_ocen[i];
-            }
-        }
+
+        for(int i = 0; i < this->rozmiar; i++)
+            if(naj < oceny[i])
+                naj = oceny[i];
+
         return naj;
     }
 
     float najgorsza_ocena()
     {
         float naj = 7;
-        for(int i = 0; i < this->tablica_ocen.size(); i++)
+        for(int i = 0; i < this->rozmiar; i++)
         {
-            if(naj > tablica_ocen[i])
+            if(naj > this->oceny[i])
             {
-                naj = tablica_ocen[i];
+                naj = this->oceny[i];
             }
         }
         return naj;
@@ -82,86 +72,77 @@ public:
 
     void dodaj_ocene(float nowa_ocena)
     {
-        this->tablica_ocen.push_back(nowa_ocena);
+        float* nowa_tablica = new float[rozmiar+1];
+
+        for (int i = 0; i < rozmiar; i++)
+            nowa_tablica[i] = this->oceny[i];
+
+        nowa_tablica[rozmiar] = nowa_ocena;
+
+        delete[] this->oceny;
+
+        this->oceny = nowa_tablica;
+        this->rozmiar = this->rozmiar + 1;
+
     }
 
     void usun_ocene(float do_usuniecia)
     {
-        for(int i = 0; i < this->tablica_ocen.size(); i++)
+        float* nowa_tablica = new float[rozmiar-1];
+
+        int temp = 0;
+        bool czy = false;
+        for(int i = 0; i < this->rozmiar; i++)
         {
-            if(this->tablica_ocen[i] == do_usuniecia)
+            if (this->oceny[i] == do_usuniecia)
             {
-                this->tablica_ocen.erase(this->tablica_ocen.begin()+i);
+                czy = true;
+                continue;
             }
+            nowa_tablica[temp] = oceny[i];
+            temp += 1;
+        }
+        if (czy)
+        {
+            oceny = nowa_tablica;
+            rozmiar -= 1;
         }
     }
 
     void wypisz()
     {
-        cout << "Imie: " << this->imie << endl << "Nazwisko: " << this->nazwisko << endl << "Rok urodzenia: " << this->rok_urodzenia << endl << "Oceny: [";
-        for(int i = 0; i < this->tablica_ocen.size(); i++)
+        cout << endl << "Imie: " << this->imie << endl << "Nazwisko: " << this->nazwisko << endl << "Rok urodzenia: " << this->rok_urodzenia << endl << "Oceny: [";
+        for(int i = 0; i < this->rozmiar; i++)
         {
-            cout << this->tablica_ocen[i];
+            cout << this->oceny[i];
 
-            if (i != this->tablica_ocen.size() - 1)
-            {
+            if (i != this->rozmiar - 1)
                 cout << ", ";
-            }
+
         }
-        cout << "]";
+        cout << "]" << endl;
     }
 };
 
-class ZdolnyStudent : public Student
-{
-private:
-    vector<nagroda> nagrody;
 
-public:
-    ZdolnyStudent(string imie, string nazwisko, unsigned rok_urodzenia, vector<float> tablica_ocen, vector<nagroda> nagrody)
-            : Student(imie, nazwisko, rok_urodzenia, tablica_ocen)
-    {
-        this->imie = imie;
-        this->nazwisko = nazwisko;
-        this->rok_urodzenia = rok_urodzenia;
-        this->tablica_ocen = tablica_ocen;
-        this->nagrody = nagrody;
-    }
+int main() {
 
-    void dodaj_nagrode(nagroda stopien)
-    {
-        this->nagrody.push_back(stopien);
-    }
+    float oceny[] = {2, 3.5, 2, 5, 5};
+    Student s1("Jan", "Kowalski", 2000, oceny, 5);
 
-    void wyswietl_nagrody()
-    {
-        int s1 = 0;
-        int s2 = 0;
-        int s3 = 0;
+    cout << "wiek: " << s1.wiek();
 
-        for(int i = 0; i < this->nagrody.size(); i++)
-        {
-            if(nagrody[i] == stopien1)
-                s1 += 1;
-            if(nagrody[i] == stopien2)
-                s2 += 1;
-            if(nagrody[i] == stopien3)
-                s3 += 1;
-        }
-        cout << s1 << " - nagrody 1. stopnia" << endl;
-        cout << s2 << " - nagrody 2. stopnia" << endl;
-        cout << s3 << " - nagrody 3. stopnia" << endl;
-    }
-};
+    s1.wypisz();
+    cout << "najgorsza: " << s1.najgorsza_ocena() << endl;
+    cout << "najlepsza: " << s1.najlepsza_ocena() << endl;
+    cout << "srednia: " << s1.srednia_ocen() << endl;
 
-int main()
-{
-    vector<float> oceny = {5, 4, 6, 3, 6};
-    vector<nagroda> nagrody = {stopien1, stopien1, stopien3};
-    ZdolnyStudent uczen("Marek", "Kowalski", 1999, oceny, nagrody);
+    s1.dodaj_ocene(4);
+    s1.wypisz();
 
-    uczen.wyswietl_nagrody();
-    uczen.dodaj_nagrode(stopien2);
-    cout << endl;
-    uczen.wyswietl_nagrody();
+    s1.usun_ocene(3.5);
+    s1.usun_ocene(3.5);
+    s1.wypisz();
+
+    return 0;
 }
