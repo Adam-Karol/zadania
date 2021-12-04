@@ -15,7 +15,7 @@ def pinezki_na_odcinku(a, b):
     if dlugosc == 1:
         return a, b
 
-    return (a,) + pinezki_na_odcinku(a, pktX(a, b)) + pinezki_na_odcinku(pktY(a, b), b) + (b,)
+    return tuple(set((a,) + pinezki_na_odcinku(a, pktX(a, b)) + pinezki_na_odcinku(pktY(a, b), b) + (b,)))
 
 
 def odp_na_zapytanie(zapytanie, pinezki):
@@ -32,7 +32,6 @@ def main():
     liczba_zapytan = int(input())
 
     pinezki = tuple(sorted(set(pinezki_na_odcinku(0, 3**n))))
-    print(pinezki)
 
     for _ in range(liczba_zapytan):
         zapytanie = int(input())
