@@ -1,56 +1,42 @@
-def pinezki(a, b):
-    odc = b - a
-    x = odc // 3 + a
-    y = 2 * (odc // 3) + a
-    x, y = int(x), int(y)
-
-    return x, y
+def pktX(pierwszy_punkt, ostatni_punkt):
+    dlugosc = ostatni_punkt - pierwszy_punkt
+    x = dlugosc // 3 + pierwszy_punkt
+    return x
 
 
-potega = int(input())
-a = 0
-b = 3**potega
-lista = [0, b]
+def pktY(pierwszy_punkt, ostatni_punkt):
+    dlugosc = ostatni_punkt - pierwszy_punkt
+    y = (dlugosc // 3) * 2 + pierwszy_punkt
+    return y
 
 
-for _ in range(potega):
-    out = pinezki(a, b)
-    out2 = pinezki(out[1], b)
-    x, y = out[0], out[1]
-    lista.append(x)
-    lista.append(y)
-    x2, y2 = out2[0], out2[1]
-    lista.append(x2)
-    lista.append(y2)
-    b = x
+def pinezki_na_odcinku(a, b):
+    dlugosc = b - a
+    if dlugosc == 1:
+        return a, b
 
-b = 3**potega
-y = pinezki(a, b)[1]
-temp = False
-
-for _ in range(potega):
-    out = pinezki(a, b)
-    if temp:
-        out2 = pinezki(y, out[0])
-        temp = False
-    else:
-        out2 = out
-    x, y = out[0], out[1]
-    lista.append(x)
-    lista.append(y)
-    x2, y2 = out2[0], out2[1]
-    lista.append(x2)
-    lista.append(y2)
-    a = y
-    temp = True
+    return (a,) + pinezki_na_odcinku(a, pktX(a, b)) + pinezki_na_odcinku(pktY(a, b), b) + (b,)
 
 
-lista = sorted(list(set(lista)))
+def odp_na_zapytanie(zapytanie, pinezki):
+    indeks = zapytanie - 1
+
+    if indeks < len(pinezki):
+        return pinezki[indeks]
+
+    return "NIE"
 
 
-for i in range(int(input())):
-    zapytanie = int(input())
-    try:
-        print(lista[zapytanie - 1])
-    except IndexError:
-        print("NIE")
+def main():
+    n = int(input())
+    liczba_zapytan = int(input())
+
+    pinezki = tuple(sorted(set(pinezki_na_odcinku(0, 3**n))))
+    print(pinezki)
+
+    for _ in range(liczba_zapytan):
+        zapytanie = int(input())
+        print(odp_na_zapytanie(zapytanie, pinezki))
+
+
+main()
