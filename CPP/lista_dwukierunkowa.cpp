@@ -1,6 +1,7 @@
 #include <iostream>
 using namespace std;
 
+
 template <typename T>
 struct elem
 {
@@ -8,6 +9,37 @@ struct elem
     elem* nast;
     elem* poprz;
 };
+
+template <typename T>
+void dodaj_elem_na_koniec_rek(elem<T>*& obeceny_element, T do_dodania)
+{
+    if (obeceny_element == nullptr)
+    {
+        obeceny_element = new elem<T>;
+        obeceny_element->nast = nullptr;
+        obeceny_element->poprz = nullptr;
+        obeceny_element->wartosc = do_dodania;
+    }
+    else if (obeceny_element->nast == nullptr)
+    {
+        obeceny_element->nast = new elem<T>;
+        obeceny_element->nast->nast = nullptr;
+        obeceny_element->nast->poprz = obeceny_element;
+        obeceny_element->nast->wartosc = do_dodania;
+    }
+    else
+    {
+        dodaj_elem_na_koniec_rek(obeceny_element->nast, do_dodania);
+    }
+}
+
+
+// Napisz rekurencyjną funkcją sprawdzającą czy dana wartość należy do listy (czy_zawiera)
+
+
+
+
+
 
 template <typename T>
 class ListaDwukierunkowa
@@ -18,7 +50,6 @@ protected:
 public:
     ListaDwukierunkowa()
     {
-
         this->lista = nullptr;
     }
 
@@ -32,9 +63,11 @@ public:
         return zwroc_wartosc_ref(a);
     }
 
-    void dodaj_elem(const T do_dodania)
+    void dodaj_elem_na_koniec(const T do_dodania)
     {
-        if (lista == nullptr)
+        dodaj_elem_na_koniec_rek(lista, do_dodania);
+        
+        /*if (lista == nullptr)
         {
             lista = new elem<T>;
             lista->wartosc = do_dodania;
@@ -52,7 +85,8 @@ public:
             temp->nast->wartosc = do_dodania;
             temp->nast->nast = nullptr;
             temp->nast->poprz = temp;
-        }
+        }*/
+
     }
 
     void wyswietl_elem()
@@ -200,10 +234,12 @@ public:
 
 int main()
 {
-    ListaDwukierunkowa<int> lista;
-    lista.dodaj_elem(2.1);
-    lista.dodaj_elem(3.2);
-    lista.dodaj_elem(4.3);
+    ListaDwukierunkowa<double> lista;
+    lista.dodaj_elem_na_koniec(2.1);
+    lista.dodaj_elem_na_koniec(3.2);
+    lista.dodaj_elem_na_koniec(4.3);
+
+    lista.wyswietl_elem();
 
     cout << lista.sumowanie();
 }

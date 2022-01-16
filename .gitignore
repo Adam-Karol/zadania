@@ -1,2 +1,10 @@
 Debug/
 debug/
+Release/
+release/
+*.ipch
+*.db
+CPP/SDL2/.vs/szablon2vs19/v16/.suo
+*.db
+CPP/SDL2/.vs/szablon2vs19/v16/.suo
+*.db
