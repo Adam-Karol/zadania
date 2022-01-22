@@ -37,8 +37,44 @@ void dodaj_elem_na_koniec_rek(elem<T>*& obeceny_element, T do_dodania)
 // Napisz rekurencyjną funkcją sprawdzającą czy dana wartość należy do listy (czy_zawiera)
 
 
+template <typename T>
+bool czy_zawiera_rek(elem<T>* obeceny_element, T war)
+{
+    if (obeceny_element == nullptr)
+    {
+        return false;
+    }
+    if (obeceny_element->wartosc == war)
+    {
+        return true;
+    }
+    return czy_zawiera_rek(obeceny_element->nast, war);
+}
+
+template <typename T>
+int zlicz_rek(elem<T>* elem, T war)
+{
+    if (elem == nullptr)
+    {
+        return 0;
+    }
+    if (elem->wartosc == war)
+    {
+        return 1 + zlicz_rek(elem->nast, war);
+    }
+    return zlicz_rek(elem->nast, war);
+}
 
 
+template <typename T>
+T sumowanie_rek(elem<T>* elem)
+{
+    if (elem == nullptr)
+    {
+        return 0;
+    }
+    return elem->wartosc + sumowanie_rek(elem->nast);
+}
 
 
 template <typename T>
@@ -66,7 +102,7 @@ public:
     void dodaj_elem_na_koniec(const T do_dodania)
     {
         dodaj_elem_na_koniec_rek(lista, do_dodania);
-        
+
         /*if (lista == nullptr)
         {
             lista = new elem<T>;
@@ -146,15 +182,16 @@ public:
 
     T sumowanie()
     {
-        elem<T> *temp = lista;
-        T suma = 0;
-
-        while (temp != nullptr)
-        {
-            suma += temp->wartosc;
-            temp = temp->nast;
-        }
-        return suma;
+//        elem<T> *temp = lista;
+//        T suma = 0;
+//
+//        while (temp != nullptr)
+//        {
+//            suma += temp->wartosc;
+//            temp = temp->nast;
+//        }
+//        return suma;
+        return sumowanie_rek(lista);
     }
 
     int liczba_elem()
@@ -205,19 +242,26 @@ public:
         throw invalid_argument("Nie ma takiego elementu w liscie");
     }
 
-    bool czy_zawiera(int x)
+    bool czy_zawiera(T x)
     {
-        elem<T> *temp = lista;
-        bool czy = false;
-        while (temp != nullptr)
-        {
-            if (temp->wartosc == x)
-            {
-                czy = true;
-            }
-            temp = temp->nast;
-        }
-        return czy;
+//        elem<T> *temp = lista;
+//        bool czy = false;
+//        while (temp != nullptr)
+//        {
+//            if (temp->wartosc == x)
+//            {
+//                czy = true;
+//            }
+//            temp = temp->nast;
+//        }
+//        return czy;
+
+        return czy_zawiera_rek(lista, x);
+    }
+
+    int zlicz(T war)
+    {
+        return zlicz_rek(lista, war);
     }
 
     void zwolnij_liste()
@@ -236,10 +280,7 @@ int main()
 {
     ListaDwukierunkowa<double> lista;
     lista.dodaj_elem_na_koniec(2.1);
-    lista.dodaj_elem_na_koniec(3.2);
-    lista.dodaj_elem_na_koniec(4.3);
-
-    lista.wyswietl_elem();
+    lista.dodaj_elem_na_koniec(2.2);
 
     cout << lista.sumowanie();
 }
