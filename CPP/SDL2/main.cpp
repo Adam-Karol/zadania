@@ -6,6 +6,7 @@
 #include <stdlib.h> // srand(), rand()
 
 #include "drawing.h"
+#include "functions.h"
 
 using namespace std;
 
@@ -15,8 +16,6 @@ using namespace std;
 #define STAGEVIEW_WIDTH 1000
 #define STAGEVIEW_HEIGHT 1000
 
-
-// main
 #ifdef __cplusplus
 extern "C"
 #endif
@@ -63,57 +62,52 @@ struct bullets
 	double speed = 50;
 	double timer = 0; // time since last bullets was added
 	double radius = 5;
+
+	void addBullet(enemy enemy1)
+	{
+		int x = enemy1.x;
+		int y = enemy1.y;
+
+		int number = this->number;
+
+		this->position[number].x = x;
+		this->position[number].y = y;
+
+		int vx;
+		int vy;
+		do
+		{
+			vx = random(-1, 2);
+			vy = random(-1, 2);
+		}
+		while (vx == 0 && vy == 0);
+
+		this->direction[number].x = vx; 
+		this->direction[number].y = vy;
+
+		this->number++;
+
+	}
+
+	void moveBullets(double t)
+	{
+		for (int i = 0; i < this->number; i++)
+		{
+			double oldx = this->position[i].x;
+			double oldy = this->position[i].y;
+
+			double s = this->speed;
+
+			//printf("przesuniecie: %lf %lf\n", bullets1->direction[i].x * t, bullets1->direction[i].y * t);
+			this->position[i].x = oldx + this->direction[i].x * s * t;
+			this->position[i].y = oldy + this->direction[i].y * s * t;
+		}
+	}
+
 };
-
-int random(int a, int b) // a = -1; b = 2 
-{
-	return (rand() % (b-a)) + a;
-}
-
-void addBullet(enemy enemy1, bullets* bullets1)
-{
-	int x = enemy1.x;
-	int y = enemy1.y;
-
-	int number = bullets1->number;
-
-	bullets1->position[number].x = x;
-	bullets1->position[number].y = y;
-
-	int vx;
-	int vy;
-	do
-	{
-		vx = random(-1, 2);
-		vy = random(-1, 2);
-	}
-	while (vx == 0 && vy == 0);
-
-	bullets1->direction[number].x = vx; 
-	bullets1->direction[number].y = vy;
-
-	bullets1->number++;
-
-}
-
-void moveBullets(bullets* bullets1, double t)
-{
-	for (int i = 0; i < bullets1->number; i++)
-	{
-		double oldx = bullets1->position[i].x;
-		double oldy = bullets1->position[i].y;
-
-		double s = bullets1->speed;
-
-		//printf("przesuniecie: %lf %lf\n", bullets1->direction[i].x * t, bullets1->direction[i].y * t);
-		bullets1->position[i].x = oldx + bullets1->direction[i].x * s * t;
-		bullets1->position[i].y = oldy + bullets1->direction[i].y * s * t;
-	}
-}
 
 void drawBulletsOnSurface(SDL_Surface* screen, bullets bullets1)
 {
-
 	for (int i = 0; i < bullets1.number; i++)
 	{
 		int x = bullets1.position[i].x;
@@ -132,7 +126,9 @@ void newGame()
 
 int main(int argc, char **argv)
 {
-	srand(time(0));
+	srand(time(0)); // seed rand
+
+
 
 
 
@@ -365,12 +361,14 @@ int main(int argc, char **argv)
 
 		DrawSurface(stageviewToDraw, enemy1.surface, enemy1.x, enemy1.y);
 
-		moveBullets(&bullets1, delta);
+		bullets1.moveBullets(delta);
+		//moveBullets(&bullets1, delta);
 
 		bullets1.timer += delta;
 		if (bullets1.number < 50 && bullets1.timer >= 1.0)
 		{
-			addBullet(enemy1, &bullets1);
+			bullets1.addBullet(enemy1);
+			//addBullet(enemy1, &bullets1);
 
 			bullets1.timer = 0;
 		}
