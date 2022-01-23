@@ -9,3 +9,7 @@ release/
 *.db-shm
 *.opendb
 *.db-wal
+*.vcxproj
+*.db
+*.json
+*.vcxproj
