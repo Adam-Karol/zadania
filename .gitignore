@@ -4,14 +4,8 @@ Release/
 release/
 *.ipch
 
-CPP/SDL2/.vs/szablon2vs19/v16/.suo
-
-CPP/SDL2/.vs/szablon2vs19/v16/.suo
-
-
 *.suo
 *.vcxproj
 *.db-shm
 *.opendb
 *.db-wal
-
