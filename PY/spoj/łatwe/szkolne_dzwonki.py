@@ -16,6 +16,9 @@ for i in range(len(dlugosci_przerw)):
     dzwonki_m.append(0)
     dzwonki_m[j] = dzwonki_m[j - 1] + 45
     dzwonki_h[j] = dzwonki_h[j - 1]
+    if dzwonki_m[j] >= 60:
+        dzwonki_m[j] -= 60
+        dzwonki_h[j] += 1
     j += 1
     dzwonki_h.append(0)
     dzwonki_m.append(0)
@@ -30,6 +33,9 @@ dzwonki_h.append(0)
 dzwonki_m.append(0)
 dzwonki_m[j] = dzwonki_m[j - 1] + 45
 dzwonki_h[j] = dzwonki_h[j - 1]
+if dzwonki_m[j] >= 60:
+    dzwonki_m[j] -= 60
+    dzwonki_h[j] += 1
 
 wyjscie = ""
 for i in range(len(dzwonki_h)):
