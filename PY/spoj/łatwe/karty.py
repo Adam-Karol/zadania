@@ -1,36 +1,20 @@
+def dodawanie_wartosci(karty):
+    wynik = 0
+    for i in karty:
+        if i.isnumeric():
+            wynik += int(i)
+        else:
+            wynik += wartosci_kart[i]
+    return wynik
+
+
 jasio = list(input())
 stasio = list(input())
 
-jasio_wynik = 0
-for i in jasio:
-    if i.isnumeric():
-        jasio_wynik += int(i)
-    elif i == "T":
-        jasio_wynik += 10
-    elif i == "J":
-        jasio_wynik += 11
-    elif i == "Q":
-        jasio_wynik += 12
-    elif i == "K":
-        jasio_wynik += 13
-    elif i == "A":
-        jasio_wynik += 14
+wartosci_kart = {"T": 10, "J": 11, "Q": 12, "K": 13, "A": 14}
 
-
-stasio_wynik = 0
-for i in stasio:
-    if i.isnumeric():
-        stasio_wynik += int(i)
-    elif i == "T":
-        stasio_wynik += 10
-    elif i == "J":
-        stasio_wynik += 11
-    elif i == "Q":
-        stasio_wynik += 12
-    elif i == "K":
-        stasio_wynik += 13
-    elif i == "A":
-        stasio_wynik += 14
+jasio_wynik = dodawanie_wartosci(jasio)
+stasio_wynik = dodawanie_wartosci(stasio)
 
 
 if jasio_wynik > stasio_wynik:
