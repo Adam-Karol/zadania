@@ -120,7 +120,7 @@ int main(int argc, char **argv)
 
 	double x = 50;
 	double y = 50;
-	double speed = 500;
+	double speed = 1000;
 	SDL_Surface* gracz = SDL_LoadBMP("./gracz.bmp");
 	if(gracz == NULL)
 	{
@@ -147,6 +147,13 @@ int main(int argc, char **argv)
 	while(quit == false)
 	{
 		DrawSurface(screen, plansza, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+
+
+		DrawLine(plansza, 100, 100, 100, 1, 0, niebieski);
+		DrawLine(plansza, 100, 200, 100, 1, 0, niebieski);
+		DrawLine(plansza, 100, 100, 100, 0, 1, niebieski);
+		DrawLine(plansza, 200, 100, 100, 0, 1, niebieski);
+
 		
 		int t2 = SDL_GetTicks();
 
