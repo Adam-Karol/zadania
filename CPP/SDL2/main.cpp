@@ -11,7 +11,7 @@
 
 using namespace std;
 
-#define SCREEN_WIDTH 640
+#define SCREEN_WIDTH 540
 #define SCREEN_HEIGHT 480
 
 #ifdef __cplusplus
@@ -21,12 +21,6 @@ extern "C"
 int main(int argc, char **argv)
 {
 	srand(time(0)); // seed rand
-
-	SDL_Event event;
-	SDL_Surface *screen, *charset;
-	SDL_Texture *scrtex;
-	SDL_Window *window;
-	SDL_Renderer *renderer;
 
 	// okno konsoli nie jest widoczne, je¿eli chcemy zobaczyæ
 	// komunikaty wypisywane printf-em trzeba w opcjach:
@@ -41,10 +35,10 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
+	SDL_Window *window;
+	SDL_Renderer *renderer;
 	int rc;
-
-	// tryb pe³noekranowy
-	bool fullscreen = false;
+	bool fullscreen = false; // Tryb pe³noekranowy.
 	if (fullscreen)
 		rc = SDL_CreateWindowAndRenderer(0, 0, SDL_WINDOW_FULLSCREEN_DESKTOP, &window, &renderer);
 	else
@@ -60,19 +54,18 @@ int main(int argc, char **argv)
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 	SDL_RenderSetLogicalSize(renderer, SCREEN_WIDTH, SCREEN_HEIGHT);
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-
 	SDL_SetWindowTitle(window, "Nasze okno");
 
-	screen = SDL_CreateRGBSurface(0, SCREEN_WIDTH, SCREEN_HEIGHT, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
+	SDL_Surface *screen = SDL_CreateRGBSurface(0, SCREEN_WIDTH, SCREEN_HEIGHT, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
 
-	scrtex = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, SCREEN_WIDTH, SCREEN_HEIGHT);
+	SDL_Texture *scrtex = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	// wy³¹czenie widocznoœci kursora myszy
 	SDL_ShowCursor(SDL_DISABLE);
 	//SDL_ShowCursor(SDL_ENABLE);
 
 	// wczytanie obrazka cs8x8.bmp
-	charset = SDL_LoadBMP("./cs8x8.bmp");
+	SDL_Surface *charset = SDL_LoadBMP("./cs8x8.bmp");
 	if(charset == NULL)
 	{
 		printf("SDL_LoadBMP(cs8x8.bmp) error: %s\n", SDL_GetError());
@@ -83,9 +76,8 @@ int main(int argc, char **argv)
 		SDL_Quit();
 		return 1;
 	};
+
 	SDL_SetColorKey(charset, true, 0x000000);
-
-
 
 	SDL_Surface* plansza = SDL_LoadBMP("./plansza.bmp");
 	if(plansza == NULL) 
@@ -94,6 +86,22 @@ int main(int argc, char **argv)
 
 		SDL_FreeSurface(charset);
 		SDL_FreeSurface(screen);
+		SDL_DestroyTexture(scrtex);
+		SDL_DestroyWindow(window);
+		SDL_DestroyRenderer(renderer);
+
+		SDL_Quit();
+		return 1;
+	};
+
+	SDL_Surface* obrazek = SDL_LoadBMP("./bullet.bmp");
+	if(obrazek == NULL) 
+	{
+		cout << "SDL_LoadBMP(bullet.bmp) error: \n" << SDL_GetError();
+
+		SDL_FreeSurface(charset);
+		SDL_FreeSurface(screen);
+		SDL_FreeSurface(plansza);
 		SDL_DestroyTexture(scrtex);
 		SDL_DestroyWindow(window);
 		SDL_DestroyRenderer(renderer);
@@ -131,30 +139,33 @@ int main(int argc, char **argv)
 		SDL_DestroyWindow(window);
 		SDL_DestroyRenderer(renderer);
 		SDL_FreeSurface(plansza);
+		SDL_FreeSurface(obrazek);
 
 		SDL_Quit();
 		return 1;
 	};
 
-	// linie naoko³o plansza
-	//DrawLine(plansza, 0, 0, 1000, 1, 0, niebieski);
-	//DrawLine(plansza, 0, 999, 1000, 1, 0, niebieski);
-	//DrawLine(plansza, 0, 0, 1000, 0, 1, niebieski);
-	//DrawLine(plansza, 999, 0, 1000, 0, 1, niebieski);
+	// Rysowanie.
+	DrawLine(gracz, 0, 9, 20, 1, 0, czerwony);
+	DrawLine(gracz, 0, 10, 20, 1, 0, czerwony);
+	DrawLine(gracz, 9, 0, 20, 0, 1, czerwony);
+	DrawLine(gracz, 10, 0, 20, 0, 1, czerwony);
+
+	DrawString(plansza, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, "Hello!", charset);
+	DrawPixel(plansza, random(SCREEN_WIDTH/3, 2*SCREEN_WIDTH/3), random(SCREEN_HEIGHT/3, 2*SCREEN_HEIGHT/3), zielony);
+	DrawRectangle(plansza, random(SCREEN_WIDTH/3, 2*SCREEN_WIDTH/3), random(SCREEN_HEIGHT/3, 2*SCREEN_HEIGHT/3),
+			random(10, 50), random(10, 50), zielony, zielony);\
+	DrawSurface(plansza, obrazek, 100, 100);
 
 	// main loop of the game
 	bool quit = false;
 	while(quit == false)
 	{
+		
 		DrawSurface(screen, plansza, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 
-
-		DrawLine(plansza, 100, 100, 100, 1, 0, niebieski);
-		DrawLine(plansza, 100, 200, 100, 1, 0, niebieski);
-		DrawLine(plansza, 100, 100, 100, 0, 1, niebieski);
-		DrawLine(plansza, 200, 100, 100, 0, 1, niebieski);
-
 		
+
 		int t2 = SDL_GetTicks();
 
 		// w tym momencie t2-t1 to czas w milisekundach,
@@ -209,6 +220,7 @@ int main(int argc, char **argv)
 
 
 		// obs³uga zdarzeñ (o ile jakieœ zasz³y) / handling of events (if there were any)
+		SDL_Event event;
 		while(SDL_PollEvent(&event))
 		{
 			switch(event.type)
@@ -260,6 +272,8 @@ int main(int argc, char **argv)
 	SDL_FreeSurface(plansza);
 
 	SDL_FreeSurface(gracz);
+
+	SDL_FreeSurface(obrazek);
 
 	SDL_DestroyTexture(scrtex);
 	SDL_DestroyRenderer(renderer);
