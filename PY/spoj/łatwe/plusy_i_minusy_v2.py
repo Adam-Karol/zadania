@@ -33,16 +33,9 @@ class Stack:
 def main():
     plusy_i_minusy = list(input())
     stos = Stack()
-    out = ""
+    out = []
 
     for i in plusy_i_minusy:
-        if len(stos) == 3:
-            if stos.peek() == "+":
-                out += "5 "
-            else:
-                out += "1 "
-            stos.oproznij()
-
         if i == "+":
             if stos.peek() == "-":
                 stos.pop()
@@ -54,10 +47,17 @@ def main():
             else:
                 stos.push("-")
 
-    if out == "":
+        if len(stos) == 3:
+            if stos.peek() == "+":
+                out.append(5)
+            else:
+                out.append(1)
+            stos.oproznij()
+
+    if len(out) == 0:
         print("BRAK")
     else:
-        print(out[:-1])
+        print(*out)
 
 
 main()
