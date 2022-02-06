@@ -110,6 +110,23 @@ int main(int argc, char **argv)
 		return 1;
 	};
 
+	SDL_Surface* prostokat = SDL_LoadBMP("./prostokat.bmp");
+	if (prostokat == NULL)
+	{
+		cout << "SDL_LoadBMP(prostokat.bmp) error: \n" << SDL_GetError();
+
+		SDL_FreeSurface(charset);
+		SDL_FreeSurface(screen);
+		SDL_FreeSurface(obrazek);
+		SDL_FreeSurface(plansza);
+		SDL_DestroyTexture(scrtex);
+		SDL_DestroyWindow(window);
+		SDL_DestroyRenderer(renderer);
+
+		SDL_Quit();
+		return 1;
+	};
+
 	char text[128];
 	const int czarny = SDL_MapRGB(screen->format, 0x00, 0x00, 0x00);
 	const int zielony = SDL_MapRGB(screen->format, 0x00, 0xFF, 0x00);
@@ -140,6 +157,7 @@ int main(int argc, char **argv)
 		SDL_DestroyRenderer(renderer);
 		SDL_FreeSurface(plansza);
 		SDL_FreeSurface(obrazek);
+		SDL_FreeSurface(prostokat);
 
 		SDL_Quit();
 		return 1;
@@ -151,21 +169,33 @@ int main(int argc, char **argv)
 	DrawLine(gracz, 9, 0, 20, 0, 1, czerwony);
 	DrawLine(gracz, 10, 0, 20, 0, 1, czerwony);
 
+
+	DrawLine(plansza, 0, SCREEN_HEIGHT / 2, SCREEN_WIDTH, 1, 0, zielony);
+	DrawLine(plansza, SCREEN_WIDTH / 2, 0, SCREEN_HEIGHT, 0, 1, zielony);
+
+
 	DrawString(plansza, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, "Hello!", charset);
 	DrawPixel(plansza, random(SCREEN_WIDTH/3, 2*SCREEN_WIDTH/3), random(SCREEN_HEIGHT/3, 2*SCREEN_HEIGHT/3), zielony);
 	DrawRectangle(plansza, random(SCREEN_WIDTH/3, 2*SCREEN_WIDTH/3), random(SCREEN_HEIGHT/3, 2*SCREEN_HEIGHT/3),
-			random(10, 50), random(10, 50), zielony, zielony);\
+			random(10, 50), random(10, 50), zielony, zielony);
 	DrawSurface(plansza, obrazek, 100, 100);
+
+	DrawCircle(plansza, 0, 0, 50, zielony, niebieski);
+	DrawCircle(plansza, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 100, zielony, niebieski);
+	DrawCircle(plansza, SCREEN_WIDTH, SCREEN_HEIGHT / 2, 50, zielony, niebieski);
+	DrawCircle(plansza, 100, SCREEN_HEIGHT, 10, zielony, niebieski);
+
 
 	// main loop of the game
 	bool quit = false;
 	while(quit == false)
 	{
-		
 		DrawSurface(screen, plansza, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 
-		
 
+		/*DrawSurface(screen, prostokat, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);*/
+		
+		
 		int t2 = SDL_GetTicks();
 
 		// w tym momencie t2-t1 to czas w milisekundach,
@@ -202,13 +232,13 @@ int main(int argc, char **argv)
 		
 
 		// tekst informacyjny / info text
-		DrawRectangle(screen, 4, 4, SCREEN_WIDTH - 8, 36, czerwony, niebieski);
+		//DrawRectangle(screen, 4, 4, SCREEN_WIDTH - 8, 36, czerwony, niebieski);
 		//            "template for the second project, elapsed time = %.1lf s  %.0lf frames / s"
-		sprintf_s(text, "Szablon drugiego zadania, czas trwania = %.1lf s  %.0lf klatek / s", worldTime, fps);
-		DrawString(screen, screen->w / 2 - strlen(text) * 8 / 2, 10, text, charset);
+		//sprintf_s(text, "Szablon drugiego zadania, czas trwania = %.1lf s  %.0lf klatek / s", worldTime, fps);
+		//DrawString(screen, screen->w / 2 - strlen(text) * 8 / 2, 10, text, charset);
 		//	      "Esc - exit, \030 - faster, \031 - slower"
-		sprintf_s(text, "Esc - wyjscie, Strzalki - sterowanie");
-		DrawString(screen, screen->w / 2 - strlen(text) * 8 / 2, 26, text, charset);
+		//sprintf_s(text, "Esc - wyjscie, Strzalki - sterowanie");
+		//DrawString(screen, screen->w / 2 - strlen(text) * 8 / 2, 26, text, charset);
 
 
 
@@ -274,6 +304,8 @@ int main(int argc, char **argv)
 	SDL_FreeSurface(gracz);
 
 	SDL_FreeSurface(obrazek);
+
+	SDL_FreeSurface(prostokat);
 
 	SDL_DestroyTexture(scrtex);
 	SDL_DestroyRenderer(renderer);

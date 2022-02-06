@@ -1,4 +1,9 @@
 #include "drawing.h"
+#include <iostream>
+#include <string>
+#include <math.h>
+
+using namespace std;
 
 // Definicje (implementacje) funkcji.
 
@@ -45,11 +50,15 @@ void DrawSurface(SDL_Surface *screen, SDL_Surface *sprite, int x, int y) {
 
 // rysowanie pojedynczego pixela
 // draw a single pixel
-void DrawPixel(SDL_Surface *surface, int x, int y, Uint32 color) {
-	int bpp = surface->format->BytesPerPixel;
-	Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
-	*(Uint32 *)p = color;
-	};
+void DrawPixel(SDL_Surface *surface, int x, int y, Uint32 color) 
+{
+	if (x >= 0 && y >= 0)
+	{
+		int bpp = surface->format->BytesPerPixel;
+		Uint8* p = (Uint8*)surface->pixels + y * surface->pitch + x * bpp;
+		*(Uint32*)p = color;
+	}
+};
 
 
 // rysowanie linii o d³ugoœci l w pionie (gdy dx = 0, dy = 1) 
@@ -80,4 +89,18 @@ void DrawRectangle(SDL_Surface *screen, int x, int y, int l, int k,
 };
 
 
+
+
+void DrawCircle(SDL_Surface* screen, int a, int b, int r, Uint32 outlineColor, Uint32 fillColor)
+{
+	for (int x = -r; x <= r; x++)
+	{
+		int y = sqrt(r * r - x * x);
+		int minus_y = -y;
+
+		DrawPixel(screen, x + a, y + b, outlineColor);		
+		DrawPixel(screen, x + a, minus_y + b, outlineColor);
+		DrawLine(screen, x + a, minus_y + b, y - minus_y, 0, 1, fillColor);
+	}
+};
 
