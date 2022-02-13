@@ -4,7 +4,7 @@
 #include<string.h>
 #include<time.h> // time()
 #include <stdlib.h> // srand(), rand()
-
+#include <exception>
 
 #include "drawing.h"
 #include "functions.h"
@@ -18,6 +18,33 @@ using namespace std;
 #ifdef __cplusplus
 extern "C"
 #endif
+
+class Surface
+{
+private:
+	SDL_Surface *ptr;
+
+public:
+	// Konstruktor.
+	Surface(string bmpfile)
+	{
+		ptr = SDL_LoadBMP(bmpfile.c_str());
+		if(ptr == NULL)
+			throw exception("SDL_LoadBMP failed.");
+	}
+
+	// Metoda zwaracajπca oryginalny wskaünik.
+	SDL_Surface* getPtr()
+	{
+		return ptr;
+	}
+
+	// Destruktor.
+	~Surface()
+	{
+		SDL_FreeSurface(ptr);
+	}
+};
 
 int main(int argc, char **argv)
 {
@@ -165,29 +192,14 @@ int main(int argc, char **argv)
 	double x = 50;
 	double y = 50;
 	double speed = 1000;
-	SDL_Surface* gracz = SDL_LoadBMP("./gracz.bmp");
-	if(gracz == NULL)
-	{
-		cout << "SDL_LoadBMP(bullet1.bmp) error: \n" << SDL_GetError();
-		SDL_FreeSurface(charset);
-		SDL_FreeSurface(screen);
-		SDL_DestroyTexture(scrtex);
-		SDL_DestroyWindow(window);
-		SDL_DestroyRenderer(renderer);
-		SDL_FreeSurface(plansza);
-		SDL_FreeSurface(obrazek);
-		SDL_FreeSurface(prostokat);
-		SDL_FreeSurface(kursor);
 
-		SDL_Quit();
-		return 1;
-	};
+	Surface gracz("./gracz.bmp");
 
 	// Rysowanie.
-	DrawLine(gracz, 0, 9, 20, 1, 0, czerwony);
-	DrawLine(gracz, 0, 10, 20, 1, 0, czerwony);
-	DrawLine(gracz, 9, 0, 20, 0, 1, czerwony);
-	DrawLine(gracz, 10, 0, 20, 0, 1, czerwony);
+	DrawLine(gracz.getPtr(), 0, 9, 20, 1, 0, czerwony);
+	DrawLine(gracz.getPtr(), 0, 10, 20, 1, 0, czerwony);
+	DrawLine(gracz.getPtr(), 9, 0, 20, 0, 1, czerwony);
+	DrawLine(gracz.getPtr(), 10, 0, 20, 0, 1, czerwony);
 
 
 	DrawLine(plansza, 0, SCREEN_HEIGHT / 2, SCREEN_WIDTH, 1, 0, zielony);
@@ -257,7 +269,7 @@ int main(int argc, char **argv)
 
 		// Drawing.
 
-		DrawSurface(screen, gracz, x, y);
+		DrawSurface(screen, gracz.getPtr(), x, y);
 	
 		//// kopiowanie wybranego kawa≥ka 
 		//SDL_Rect rectangle;
@@ -360,8 +372,6 @@ int main(int argc, char **argv)
 	SDL_FreeSurface(screen);
 
 	SDL_FreeSurface(plansza);
-
-	SDL_FreeSurface(gracz);
 
 	SDL_FreeSurface(obrazek);
 
