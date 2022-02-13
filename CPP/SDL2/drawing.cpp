@@ -64,13 +64,16 @@ void DrawPixel(SDL_Surface *surface, int x, int y, Uint32 color)
 // rysowanie linii o d≥ugoúci l w pionie (gdy dx = 0, dy = 1) 
 // bπdü poziomie (gdy dx = 1, dy = 0)
 // draw a vertical (when dx = 0, dy = 1) or horizontal (when dx = 1, dy = 0) line
-void DrawLine(SDL_Surface *screen, int x, int y, int l, int dx, int dy, Uint32 color) {
-	for(int i = 0; i < l; i++) {
+void DrawLine(SDL_Surface *screen, int x, int y, int l, int dx, int dy, Uint32 color) 
+{
+	for(int i = 0; i < l; i++) 
+	{
 		DrawPixel(screen, x, y, color);
 		x += dx;
 		y += dy;
-		};
 	};
+};
+
 
 
 // rysowanie prostokπta o d≥ugoúci bokÛw l i k
@@ -101,6 +104,60 @@ void DrawCircle(SDL_Surface* screen, int a, int b, int r, Uint32 outlineColor, U
 		DrawPixel(screen, x + a, y + b, outlineColor);		
 		DrawPixel(screen, x + a, minus_y + b, outlineColor);
 		DrawLine(screen, x + a, minus_y + b, y - minus_y, 0, 1, fillColor);
+	}
+};
+
+
+
+void DrawX(SDL_Surface* screen, int x, int y, int l, Uint32 Color)
+{
+	DrawLine(screen, x - l/2, y - l / 2, l, 1, 1, Color);
+	DrawLine(screen, x - l / 2, y - l / 2 + 1, l, 1, 1, Color);
+	DrawLine(screen, x - l / 2, y + l / 2, l, 1, -1, Color);
+	DrawLine(screen, x + l / 2, y - l / 2 + 1, l, -1, 1, Color);
+}
+
+
+
+void DrawLineAB(SDL_Surface* screen, int ax, int ay, int bx, int by, Uint32 color)
+{
+	if (ax == bx)
+	{
+		if (ay > by)
+		{
+			int temp = ay;
+			ay = by;
+			by = temp;
+			temp = ax;
+			ax = bx; 
+			bx = temp;
+		}
+		if (ay >= by)
+			DrawLine(screen, ax, ay, ay - by, 0, 1, color);
+		else
+			DrawLine(screen, ax, ay, by - ay, 0, 1, color);
+		return;
+	}
+
+	if (ax > bx)
+	{
+		int temp = ax; 
+		ax = bx;
+		bx = temp;
+		temp = ay;
+		ay = by;
+		by = temp;
+	}
+
+	int a = ((ay - by) / (ax - bx));
+	int b = ay - ((ax * ay) - (by * ax)) / (ax - bx);
+
+	for (int x = ax; x <= bx; x++)
+	{
+		int y = a * x + b;
+		cout << a << ' ' << b << endl;
+		DrawPixel(screen, x, y, color);
+		//cout << x << ' ' << y << endl;
 	}
 };
 

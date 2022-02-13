@@ -5,6 +5,7 @@
 #include<time.h> // time()
 #include <stdlib.h> // srand(), rand()
 
+
 #include "drawing.h"
 #include "functions.h"
 #include <iostream>
@@ -110,6 +111,23 @@ int main(int argc, char **argv)
 		return 1;
 	};
 
+	SDL_Surface* kursor = SDL_LoadBMP("./kursor.bmp");
+	if (kursor == NULL)
+	{
+		cout << "SDL_LoadBMP(kursor.bmp) error: \n" << SDL_GetError();
+
+		SDL_FreeSurface(charset);
+		SDL_FreeSurface(screen);
+		SDL_FreeSurface(plansza);
+		SDL_DestroyTexture(scrtex);
+		SDL_DestroyWindow(window);
+		SDL_DestroyRenderer(renderer);
+
+		SDL_Quit();
+		return 1;
+	};
+
+
 	SDL_Surface* prostokat = SDL_LoadBMP("./prostokat.bmp");
 	if (prostokat == NULL)
 	{
@@ -122,6 +140,7 @@ int main(int argc, char **argv)
 		SDL_DestroyTexture(scrtex);
 		SDL_DestroyWindow(window);
 		SDL_DestroyRenderer(renderer);
+		SDL_FreeSurface(kursor);
 
 		SDL_Quit();
 		return 1;
@@ -158,6 +177,7 @@ int main(int argc, char **argv)
 		SDL_FreeSurface(plansza);
 		SDL_FreeSurface(obrazek);
 		SDL_FreeSurface(prostokat);
+		SDL_FreeSurface(kursor);
 
 		SDL_Quit();
 		return 1;
@@ -185,12 +205,29 @@ int main(int argc, char **argv)
 	DrawCircle(plansza, SCREEN_WIDTH, SCREEN_HEIGHT / 2, 50, zielony, niebieski);
 	DrawCircle(plansza, 100, SCREEN_HEIGHT, 10, zielony, niebieski);
 
+	DrawX(plansza, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 100, czerwony);
+
+	//DrawLineAB(plansza, 100, 100, 200, 200, zielony);
+	//DrawLineAB(plansza, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 400, 500, zielony);
+	//DrawLineAB(plansza, 20, 20, 200, 500, zielony);
+	//DrawLineAB(plansza, 500, 300, 100, 400, niebieski);
+	DrawLineAB(plansza, 100, 100, 100, 400, zielony);
+	DrawLineAB(plansza, 200, 450, 200, 0, niebieski);
+
+	int mx = 0;
+	int my = 0;
 
 	// main loop of the game
 	bool quit = false;
 	while(quit == false)
 	{
+
+		
+
 		DrawSurface(screen, plansza, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+
+
+		DrawSurface(screen, kursor, mx, my);
 
 
 		/*DrawSurface(screen, prostokat, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);*/
@@ -253,10 +290,33 @@ int main(int argc, char **argv)
 		SDL_Event event;
 		while(SDL_PollEvent(&event))
 		{
+
+			mx = event.motion.x;
+			my = event.motion.y;
+
 			switch(event.type)
 			{
+				case SDL_MOUSEBUTTONDOWN:
+
+					switch (event.button.button)
+					{
+						case SDL_BUTTON_LEFT:
+							cout << "mx: " << mx << " ";
+							cout << "my: " << my << endl;
+
+							break;
+					}
+
+					break;
+
+					//if (event.button.button = SDL_BUTTON_LEFT)
+					//{
+					//	cout << "mx: " << mx << " ";
+					//	cout << "my: " << my << endl;
+					//}
+
 				case SDL_KEYDOWN:
-					cout << "x: " << x << " y: " << y << endl; 
+					/*cout << "x: " << x << " y: " << y << endl; */
 
 					if(event.key.keysym.sym == SDLK_ESCAPE)
 						quit = true;
@@ -306,6 +366,8 @@ int main(int argc, char **argv)
 	SDL_FreeSurface(obrazek);
 
 	SDL_FreeSurface(prostokat);
+
+	SDL_FreeSurface(kursor);
 
 	SDL_DestroyTexture(scrtex);
 	SDL_DestroyRenderer(renderer);
