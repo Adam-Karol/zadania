@@ -1,5 +1,9 @@
 for _ in range(int(input())):
-    liczby = list(map(int, input().split(" ")))
-    for liczba in range(liczby[0]):
-        if liczba % liczby[1] == 0 and liczba % liczby[2] != 0:
+    liczby = input().split(" ")
+    n = int(liczby[0])
+    x = int(liczby[1])
+    y = int(liczby[2])
+    for liczba in range(n):
+        if liczba % x == 0 and liczba % y != 0:
             print(liczba, end=" ")
+    print()
