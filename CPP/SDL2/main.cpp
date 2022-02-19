@@ -93,85 +93,18 @@ int main(int argc, char **argv)
 	//SDL_ShowCursor(SDL_ENABLE);
 
 	// wczytanie obrazka cs8x8.bmp
-	SDL_Surface *charset = SDL_LoadBMP("./cs8x8.bmp");
-	if(charset == NULL)
-	{
-		printf("SDL_LoadBMP(cs8x8.bmp) error: %s\n", SDL_GetError());
-		SDL_FreeSurface(screen);
-		SDL_DestroyTexture(scrtex);
-		SDL_DestroyWindow(window);
-		SDL_DestroyRenderer(renderer);
-		SDL_Quit();
-		return 1;
-	};
+	Surface charset("./cs8x8.bmp");
 
-	SDL_SetColorKey(charset, true, 0x000000);
+	SDL_SetColorKey(charset.getPtr(), true, 0x000000);
 
-	SDL_Surface* plansza = SDL_LoadBMP("./plansza.bmp");
-	if(plansza == NULL) 
-	{
-		cout << "SDL_LoadBMP(stage_view.bmp) error: \n" << SDL_GetError();
+	Surface plansza("./plansza.bmp");
 
-		SDL_FreeSurface(charset);
-		SDL_FreeSurface(screen);
-		SDL_DestroyTexture(scrtex);
-		SDL_DestroyWindow(window);
-		SDL_DestroyRenderer(renderer);
+	Surface obrazek("./bullet.bmp");
 
-		SDL_Quit();
-		return 1;
-	};
+	Surface kursor("./kursor.bmp");
 
-	SDL_Surface* obrazek = SDL_LoadBMP("./bullet.bmp");
-	if(obrazek == NULL) 
-	{
-		cout << "SDL_LoadBMP(bullet.bmp) error: \n" << SDL_GetError();
+	Surface prostokat("./prostokat.bmp");
 
-		SDL_FreeSurface(charset);
-		SDL_FreeSurface(screen);
-		SDL_FreeSurface(plansza);
-		SDL_DestroyTexture(scrtex);
-		SDL_DestroyWindow(window);
-		SDL_DestroyRenderer(renderer);
-
-		SDL_Quit();
-		return 1;
-	};
-
-	SDL_Surface* kursor = SDL_LoadBMP("./kursor.bmp");
-	if (kursor == NULL)
-	{
-		cout << "SDL_LoadBMP(kursor.bmp) error: \n" << SDL_GetError();
-
-		SDL_FreeSurface(charset);
-		SDL_FreeSurface(screen);
-		SDL_FreeSurface(plansza);
-		SDL_DestroyTexture(scrtex);
-		SDL_DestroyWindow(window);
-		SDL_DestroyRenderer(renderer);
-
-		SDL_Quit();
-		return 1;
-	};
-
-
-	SDL_Surface* prostokat = SDL_LoadBMP("./prostokat.bmp");
-	if (prostokat == NULL)
-	{
-		cout << "SDL_LoadBMP(prostokat.bmp) error: \n" << SDL_GetError();
-
-		SDL_FreeSurface(charset);
-		SDL_FreeSurface(screen);
-		SDL_FreeSurface(obrazek);
-		SDL_FreeSurface(plansza);
-		SDL_DestroyTexture(scrtex);
-		SDL_DestroyWindow(window);
-		SDL_DestroyRenderer(renderer);
-		SDL_FreeSurface(kursor);
-
-		SDL_Quit();
-		return 1;
-	};
 
 	char text[128];
 	const int czarny = SDL_MapRGB(screen->format, 0x00, 0x00, 0x00);
@@ -196,35 +129,35 @@ int main(int argc, char **argv)
 	Surface gracz("./gracz.bmp");
 
 	// Rysowanie.
-	DrawLine(gracz.getPtr(), 0, 9, 20, 1, 0, czerwony);
-	DrawLine(gracz.getPtr(), 0, 10, 20, 1, 0, czerwony);
-	DrawLine(gracz.getPtr(), 9, 0, 20, 0, 1, czerwony);
-	DrawLine(gracz.getPtr(), 10, 0, 20, 0, 1, czerwony);
+	//DrawLine(gracz.getPtr(), 0, 9, 20, 1, 0, czerwony);
+	//DrawLine(gracz.getPtr(), 0, 10, 20, 1, 0, czerwony);
+	//DrawLine(gracz.getPtr(), 9, 0, 20, 0, 1, czerwony);
+	//DrawLine(gracz.getPtr(), 10, 0, 20, 0, 1, czerwony);
 
 
-	DrawLine(plansza, 0, SCREEN_HEIGHT / 2, SCREEN_WIDTH, 1, 0, zielony);
-	DrawLine(plansza, SCREEN_WIDTH / 2, 0, SCREEN_HEIGHT, 0, 1, zielony);
+	//DrawLine(plansza.getPtr(), 0, SCREEN_HEIGHT / 2, SCREEN_WIDTH, 1, 0, zielony);
+	//DrawLine(plansza.getPtr(), SCREEN_WIDTH / 2, 0, SCREEN_HEIGHT, 0, 1, zielony);
 
 
-	DrawString(plansza, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, "Hello!", charset);
-	DrawPixel(plansza, random(SCREEN_WIDTH/3, 2*SCREEN_WIDTH/3), random(SCREEN_HEIGHT/3, 2*SCREEN_HEIGHT/3), zielony);
-	DrawRectangle(plansza, random(SCREEN_WIDTH/3, 2*SCREEN_WIDTH/3), random(SCREEN_HEIGHT/3, 2*SCREEN_HEIGHT/3),
-			random(10, 50), random(10, 50), zielony, zielony);
-	DrawSurface(plansza, obrazek, 100, 100);
+	//DrawString(plansza.getPtr(), SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, "Hello!", charset.getPtr());
+	//DrawPixel(plansza.getPtr(), random(SCREEN_WIDTH/3, 2*SCREEN_WIDTH/3), random(SCREEN_HEIGHT/3, 2*SCREEN_HEIGHT/3), zielony);
+	//DrawRectangle(plansza.getPtr(), random(SCREEN_WIDTH/3, 2*SCREEN_WIDTH/3), random(SCREEN_HEIGHT/3, 2*SCREEN_HEIGHT/3),
+	//		random(10, 50), random(10, 50), zielony, zielony);
+	//DrawSurface(plansza.getPtr(), obrazek.getPtr(), 100, 100);
 
-	DrawCircle(plansza, 0, 0, 50, zielony, niebieski);
-	DrawCircle(plansza, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 100, zielony, niebieski);
-	DrawCircle(plansza, SCREEN_WIDTH, SCREEN_HEIGHT / 2, 50, zielony, niebieski);
-	DrawCircle(plansza, 100, SCREEN_HEIGHT, 10, zielony, niebieski);
+	//DrawCircle(plansza.getPtr(), 0, 0, 50, zielony, niebieski);
+	//DrawCircle(plansza.getPtr(), SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 100, zielony, niebieski);
+	//DrawCircle(plansza.getPtr(), SCREEN_WIDTH, SCREEN_HEIGHT / 2, 50, zielony, niebieski);
+	//DrawCircle(plansza.getPtr(), 100, SCREEN_HEIGHT, 10, zielony, niebieski);
 
-	DrawX(plansza, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 100, czerwony);
+	//DrawX(plansza.getPtr(), SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 100, czerwony);
 
 	//DrawLineAB(plansza, 100, 100, 200, 200, zielony);
 	//DrawLineAB(plansza, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 400, 500, zielony);
 	//DrawLineAB(plansza, 20, 20, 200, 500, zielony);
 	//DrawLineAB(plansza, 500, 300, 100, 400, niebieski);
-	DrawLineAB(plansza, 100, 100, 100, 400, zielony);
-	DrawLineAB(plansza, 200, 450, 200, 0, niebieski);
+	//DrawLineAB(plansza.getPtr(), 100, 100, 100, 400, zielony);
+	//DrawLineAB(plansza.getPtr(), 200, 450, 200, 0, niebieski);
 
 	int mx = 0;
 	int my = 0;
@@ -236,10 +169,28 @@ int main(int argc, char **argv)
 
 		
 
-		DrawSurface(screen, plansza, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+		DrawSurface(screen, plansza.getPtr(), SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 
 
-		DrawSurface(screen, kursor, mx, my);
+		DrawLine(screen, SCREEN_WIDTH / 3, 0, SCREEN_HEIGHT, 0, 1, czarny);
+		DrawLine(screen, SCREEN_WIDTH / 3 + 1, 0, SCREEN_HEIGHT, 0, 1, czarny);
+		DrawLine(screen, SCREEN_WIDTH / 3 + 2, 0, SCREEN_HEIGHT, 0, 1, czarny);
+
+		DrawLine(screen, 2 * (SCREEN_WIDTH / 3), 0, SCREEN_HEIGHT, 0, 1, czarny);
+		DrawLine(screen, 2 * (SCREEN_WIDTH / 3) + 1, 0, SCREEN_HEIGHT, 0, 1, czarny);
+		DrawLine(screen, 2 * (SCREEN_WIDTH / 3) + 2, 0, SCREEN_HEIGHT, 0, 1, czarny);
+
+		DrawLine(screen, 0, SCREEN_HEIGHT / 3, SCREEN_WIDTH, 1, 0, czarny);
+		DrawLine(screen, 0, SCREEN_HEIGHT / 3 + 1, SCREEN_WIDTH, 1, 0, czarny);
+		DrawLine(screen, 0, SCREEN_HEIGHT / 3 + 2, SCREEN_WIDTH, 1, 0, czarny);
+
+		DrawLine(screen, 0, 2 * (SCREEN_HEIGHT / 3), SCREEN_WIDTH, 1, 0, czarny);
+		DrawLine(screen, 0, 2 * (SCREEN_HEIGHT / 3) + 1, SCREEN_WIDTH, 1, 0, czarny);
+		DrawLine(screen, 0, 2 * (SCREEN_HEIGHT / 3) + 2, SCREEN_WIDTH, 1, 0, czarny);
+
+
+
+		DrawSurface(screen, kursor.getPtr(), mx, my);
 
 
 		/*DrawSurface(screen, prostokat, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);*/
@@ -269,7 +220,7 @@ int main(int argc, char **argv)
 
 		// Drawing.
 
-		DrawSurface(screen, gracz.getPtr(), x, y);
+		//DrawSurface(screen, gracz.getPtr(), x, y);
 	
 		//// kopiowanie wybranego kawa³ka 
 		//SDL_Rect rectangle;
@@ -368,16 +319,6 @@ int main(int argc, char **argv)
 
 	// zwolnienie powierzchni / freeing all surfaces
 	// zwolnienie pamiêci
-	SDL_FreeSurface(charset);
-	SDL_FreeSurface(screen);
-
-	SDL_FreeSurface(plansza);
-
-	SDL_FreeSurface(obrazek);
-
-	SDL_FreeSurface(prostokat);
-
-	SDL_FreeSurface(kursor);
 
 	SDL_DestroyTexture(scrtex);
 	SDL_DestroyRenderer(renderer);
