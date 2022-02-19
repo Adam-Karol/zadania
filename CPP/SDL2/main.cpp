@@ -101,7 +101,8 @@ int main(int argc, char **argv)
 
 	Surface obrazek("./bullet.bmp");
 
-	Surface kursor("./kursor.bmp");
+	//Surface kursor("./kursor.bmp");
+	SDL_Surface* kursor = IMG_Load("cursor.cur");
 
 	Surface prostokat("./prostokat.bmp");
 
@@ -190,7 +191,7 @@ int main(int argc, char **argv)
 
 
 
-		DrawSurface(screen, kursor.getPtr(), mx, my);
+		DrawSurface(screen, kursor, mx, my);
 
 
 		/*DrawSurface(screen, prostokat, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);*/
