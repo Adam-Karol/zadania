@@ -28,9 +28,9 @@ public:
 	// Konstruktor.
 	Surface(string bmpfile)
 	{
-		ptr = SDL_LoadBMP(bmpfile.c_str());
+		ptr = IMG_Load(bmpfile.c_str());
 		if(ptr == NULL)
-			throw exception("SDL_LoadBMP failed.");
+			throw exception("IMG_Load failed.");
 	}
 
 	// Metoda zwaracaj¹ca oryginalny wskaŸnik.
@@ -102,7 +102,7 @@ int main(int argc, char **argv)
 	Surface obrazek("./bullet.bmp");
 
 	//Surface kursor("./kursor.bmp");
-	SDL_Surface* kursor = IMG_Load("cursor.cur");
+	Surface kursor("cursor.cur");
 
 	Surface prostokat("./prostokat.bmp");
 
@@ -162,6 +162,7 @@ int main(int argc, char **argv)
 
 	int mx = 0;
 	int my = 0;
+	bool czy = false;
 
 	// main loop of the game
 	bool quit = false;
@@ -191,7 +192,7 @@ int main(int argc, char **argv)
 
 
 
-		DrawSurface(screen, kursor, mx, my);
+		DrawSurface(screen, kursor.getPtr(), mx, my);
 
 
 		/*DrawSurface(screen, prostokat, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);*/
@@ -251,6 +252,7 @@ int main(int argc, char **argv)
 
 
 		// obs³uga zdarzeñ (o ile jakieœ zasz³y) / handling of events (if there were any)
+		
 		SDL_Event event;
 		while(SDL_PollEvent(&event))
 		{
@@ -265,8 +267,22 @@ int main(int argc, char **argv)
 					switch (event.button.button)
 					{
 						case SDL_BUTTON_LEFT:
+							if (czy)
+							{
+								DrawX(plansza.getPtr(), mx, my, 100, niebieski);
+								czy = false;
+							}
+							else
+							{
+								DrawCircle(plansza.getPtr(), mx, my, 100, zielony, czerwony);
+								czy = true;
+							}
+
+
 							cout << "mx: " << mx << " ";
 							cout << "my: " << my << endl;
+
+							
 
 							break;
 					}
