@@ -46,6 +46,50 @@ public:
 	}
 };
 
+
+
+void postaw_x(int x, int y, Surface plansza)
+{
+	if (x < 180 && y < 160)
+	{
+		DrawX(plansza.getPtr(), 90, 80, 100, SDL_MapRGB(plansza.getPtr()->format, 0x00, 0x00, 0x00));
+	}
+	if (x < 180 && 160 < y < 320)
+	{
+		DrawX(plansza.getPtr(), 90, 240, 100, SDL_MapRGB(plansza.getPtr()->format, 0x00, 0x00, 0x00));
+	}
+	if (x < 180 && 320 < y)
+	{
+		DrawX(plansza.getPtr(), 90, 400, 100, SDL_MapRGB(plansza.getPtr()->format, 0x00, 0x00, 0x00));
+	}
+	if (180 < x < 360 && y < 160)
+	{
+		DrawX(plansza.getPtr(), 270, 80, 100, SDL_MapRGB(plansza.getPtr()->format, 0x00, 0x00, 0x00));
+	}
+	if (360 < x && y < 160)
+	{
+		DrawX(plansza.getPtr(), 450, 80, 100, SDL_MapRGB(plansza.getPtr()->format, 0x00, 0x00, 0x00));
+	}
+	if (180 < x < 360 && 160 < y < 320)
+	{
+		DrawX(plansza.getPtr(), 270, 240, 100, SDL_MapRGB(plansza.getPtr()->format, 0x00, 0x00, 0x00));
+	}
+	if (360 < x && 160 < y < 320)
+	{
+		DrawX(plansza.getPtr(), 450, 240, 100, SDL_MapRGB(plansza.getPtr()->format, 0x00, 0x00, 0x00));
+	}
+	if (360 < x && 320 < y)
+	{
+		DrawX(plansza.getPtr(), 450, 400, 100, SDL_MapRGB(plansza.getPtr()->format, 0x00, 0x00, 0x00));
+	}
+	if (180 < x < 360 && 320 < y)
+	{
+		DrawX(plansza.getPtr(), 270, 400, 100, SDL_MapRGB(plansza.getPtr()->format, 0x00, 0x00, 0x00));
+	}
+}
+
+
+
 int main(int argc, char **argv)
 {
 	srand(time(0)); // seed rand
@@ -105,6 +149,9 @@ int main(int argc, char **argv)
 	Surface kursor("cursor.cur");
 
 	Surface prostokat("./prostokat.bmp");
+
+
+	Surface kolo("./kolo.png");
 
 
 	char text[128];
@@ -269,12 +316,12 @@ int main(int argc, char **argv)
 						case SDL_BUTTON_LEFT:
 							if (czy)
 							{
-								DrawX(plansza.getPtr(), mx, my, 100, niebieski);
+								postaw_x(mx, my, plansza);
 								czy = false;
 							}
 							else
 							{
-								DrawCircle(plansza.getPtr(), mx, my, 100, zielony, czerwony);
+								DrawSurface(plansza.getPtr(), kolo.getPtr(), mx, my);
 								czy = true;
 							}
 
