@@ -22,6 +22,7 @@ extern "C"
 class Surface
 {
 private:
+	// Pola.
 	SDL_Surface *ptr;
 
 public:
@@ -42,47 +43,48 @@ public:
 	// Destruktor.
 	~Surface()
 	{
-		SDL_FreeSurface(ptr);
+		SDL_FreeSurface(this->ptr);
 	}
 };
 
 
 
-void postaw_x(int x, int y, Surface plansza)
+void postaw_x(int x, int y, Surface& plansza)
 {
+
 	if (x < 180 && y < 160)
 	{
 		DrawX(plansza.getPtr(), 90, 80, 100, SDL_MapRGB(plansza.getPtr()->format, 0x00, 0x00, 0x00));
 	}
-	if (x < 180 && 160 < y < 320)
+	else if (x < 180 && 160 < y < 320)
 	{
 		DrawX(plansza.getPtr(), 90, 240, 100, SDL_MapRGB(plansza.getPtr()->format, 0x00, 0x00, 0x00));
 	}
-	if (x < 180 && 320 < y)
+	else if (x < 180 && 320 < y)
 	{
 		DrawX(plansza.getPtr(), 90, 400, 100, SDL_MapRGB(plansza.getPtr()->format, 0x00, 0x00, 0x00));
 	}
-	if (180 < x < 360 && y < 160)
+	else if (180 < x < 360 && y < 160)
 	{
 		DrawX(plansza.getPtr(), 270, 80, 100, SDL_MapRGB(plansza.getPtr()->format, 0x00, 0x00, 0x00));
 	}
-	if (360 < x && y < 160)
+	else if (360 < x && y < 160)
 	{
 		DrawX(plansza.getPtr(), 450, 80, 100, SDL_MapRGB(plansza.getPtr()->format, 0x00, 0x00, 0x00));
 	}
-	if (180 < x < 360 && 160 < y < 320)
+	else if (180 < x < 360 && 160 < y < 320)
 	{
 		DrawX(plansza.getPtr(), 270, 240, 100, SDL_MapRGB(plansza.getPtr()->format, 0x00, 0x00, 0x00));
 	}
-	if (360 < x && 160 < y < 320)
+	else if (360 < x && 160 < y < 320)
 	{
 		DrawX(plansza.getPtr(), 450, 240, 100, SDL_MapRGB(plansza.getPtr()->format, 0x00, 0x00, 0x00));
 	}
-	if (360 < x && 320 < y)
+	else if (360 < x && 320 < y)
 	{
 		DrawX(plansza.getPtr(), 450, 400, 100, SDL_MapRGB(plansza.getPtr()->format, 0x00, 0x00, 0x00));
 	}
-	if (180 < x < 360 && 320 < y)
+	else if (180 < x < 360 && 320 < y)
 	{
 		DrawX(plansza.getPtr(), 270, 400, 100, SDL_MapRGB(plansza.getPtr()->format, 0x00, 0x00, 0x00));
 	}
@@ -143,12 +145,12 @@ int main(int argc, char **argv)
 
 	Surface plansza("./plansza.bmp");
 
-	Surface obrazek("./bullet.bmp");
+	//Surface obrazek("./bullet.bmp");
 
 	//Surface kursor("./kursor.bmp");
 	Surface kursor("cursor.cur");
 
-	Surface prostokat("./prostokat.bmp");
+	//Surface prostokat("./prostokat.bmp");
 
 
 	Surface kolo("./kolo.png");
@@ -174,42 +176,11 @@ int main(int argc, char **argv)
 	double y = 50;
 	double speed = 1000;
 
-	Surface gracz("./gracz.bmp");
-
-	// Rysowanie.
-	//DrawLine(gracz.getPtr(), 0, 9, 20, 1, 0, czerwony);
-	//DrawLine(gracz.getPtr(), 0, 10, 20, 1, 0, czerwony);
-	//DrawLine(gracz.getPtr(), 9, 0, 20, 0, 1, czerwony);
-	//DrawLine(gracz.getPtr(), 10, 0, 20, 0, 1, czerwony);
-
-
-	//DrawLine(plansza.getPtr(), 0, SCREEN_HEIGHT / 2, SCREEN_WIDTH, 1, 0, zielony);
-	//DrawLine(plansza.getPtr(), SCREEN_WIDTH / 2, 0, SCREEN_HEIGHT, 0, 1, zielony);
-
-
-	//DrawString(plansza.getPtr(), SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, "Hello!", charset.getPtr());
-	//DrawPixel(plansza.getPtr(), random(SCREEN_WIDTH/3, 2*SCREEN_WIDTH/3), random(SCREEN_HEIGHT/3, 2*SCREEN_HEIGHT/3), zielony);
-	//DrawRectangle(plansza.getPtr(), random(SCREEN_WIDTH/3, 2*SCREEN_WIDTH/3), random(SCREEN_HEIGHT/3, 2*SCREEN_HEIGHT/3),
-	//		random(10, 50), random(10, 50), zielony, zielony);
-	//DrawSurface(plansza.getPtr(), obrazek.getPtr(), 100, 100);
-
-	//DrawCircle(plansza.getPtr(), 0, 0, 50, zielony, niebieski);
-	//DrawCircle(plansza.getPtr(), SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 100, zielony, niebieski);
-	//DrawCircle(plansza.getPtr(), SCREEN_WIDTH, SCREEN_HEIGHT / 2, 50, zielony, niebieski);
-	//DrawCircle(plansza.getPtr(), 100, SCREEN_HEIGHT, 10, zielony, niebieski);
-
-	//DrawX(plansza.getPtr(), SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 100, czerwony);
-
-	//DrawLineAB(plansza, 100, 100, 200, 200, zielony);
-	//DrawLineAB(plansza, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 400, 500, zielony);
-	//DrawLineAB(plansza, 20, 20, 200, 500, zielony);
-	//DrawLineAB(plansza, 500, 300, 100, 400, niebieski);
-	//DrawLineAB(plansza.getPtr(), 100, 100, 100, 400, zielony);
-	//DrawLineAB(plansza.getPtr(), 200, 450, 200, 0, niebieski);
+	//Surface gracz("./gracz.bmp");
 
 	int mx = 0;
 	int my = 0;
-	bool czy = false;
+	bool czy_x = false;
 
 	// main loop of the game
 	bool quit = false;
@@ -299,7 +270,6 @@ int main(int argc, char **argv)
 
 
 		// obs³uga zdarzeñ (o ile jakieœ zasz³y) / handling of events (if there were any)
-		
 		SDL_Event event;
 		while(SDL_PollEvent(&event))
 		{
@@ -314,15 +284,15 @@ int main(int argc, char **argv)
 					switch (event.button.button)
 					{
 						case SDL_BUTTON_LEFT:
-							if (czy)
+							if (czy_x)
 							{
 								postaw_x(mx, my, plansza);
-								czy = false;
+								czy_x = false;
 							}
 							else
 							{
 								DrawSurface(plansza.getPtr(), kolo.getPtr(), mx, my);
-								czy = true;
+								czy_x = true;
 							}
 
 
