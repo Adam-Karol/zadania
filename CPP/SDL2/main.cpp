@@ -19,6 +19,12 @@ using namespace std;
 extern "C"
 #endif
 
+
+int gracz1 = 1;
+int gracz2 = 4;
+int puste = 0;
+
+
 class Surface
 {
 private:
@@ -51,49 +57,237 @@ public:
 
 void postaw_x(int x, int y, Surface& plansza)
 {
+	int szerokosc_pola = SCREEN_WIDTH / 3;
+	int wysokosc_pola = SCREEN_HEIGHT / 3;
 
-	if (x < 180 && y < 160)
+	x = (x + 1) * (SCREEN_WIDTH / 3) - szerokosc_pola / 2;
+	y = (y + 1) * (SCREEN_HEIGHT / 3) - wysokosc_pola / 2;
+	
+	if (x < SCREEN_WIDTH / 3)
 	{
-		DrawX(plansza.getPtr(), 90, 80, 100, SDL_MapRGB(plansza.getPtr()->format, 0x00, 0x00, 0x00));
+		int x_poz = SCREEN_WIDTH / 3 - szerokosc_pola / 2;
+		if (y < SCREEN_HEIGHT / 3) // lewy gorny
+		{
+			DrawX(plansza.getPtr(), x_poz, SCREEN_HEIGHT / 3 - wysokosc_pola / 2, 100, SDL_MapRGB(plansza.getPtr()->format, 0x00, 0x00, 0x00));
+		}
+		else if (y < 2 * (SCREEN_HEIGHT / 3)) // lewy srodkowy
+		{
+			DrawX(plansza.getPtr(), x_poz, 2 * (SCREEN_HEIGHT / 3) - wysokosc_pola / 2, 100, SDL_MapRGB(plansza.getPtr()->format, 0x00, 0x00, 0x00));
+		}
+		else // lewy dolny
+		{
+			DrawX(plansza.getPtr(), x_poz, SCREEN_HEIGHT - wysokosc_pola / 2, 100, SDL_MapRGB(plansza.getPtr()->format, 0x00, 0x00, 0x00));
+		}
 	}
-	else if (x < 180 && 160 < y < 320)
+	else if (x < 2 * (SCREEN_WIDTH / 3))
 	{
-		DrawX(plansza.getPtr(), 90, 240, 100, SDL_MapRGB(plansza.getPtr()->format, 0x00, 0x00, 0x00));
+		int x_poz = 2 * (SCREEN_WIDTH / 3) - szerokosc_pola / 2;
+		if (y < SCREEN_HEIGHT / 3) // lewy gorny
+		{
+			DrawX(plansza.getPtr(), x_poz, SCREEN_HEIGHT / 3 - wysokosc_pola / 2, 100, SDL_MapRGB(plansza.getPtr()->format, 0x00, 0x00, 0x00));
+		}
+		else if (y < 2 * (SCREEN_HEIGHT / 3)) // lewy srodkowy
+		{
+			DrawX(plansza.getPtr(), x_poz, 2 * (SCREEN_HEIGHT / 3) - wysokosc_pola / 2, 100, SDL_MapRGB(plansza.getPtr()->format, 0x00, 0x00, 0x00));
+		}
+		else // lewy dolny
+		{
+			DrawX(plansza.getPtr(), x_poz, SCREEN_HEIGHT - wysokosc_pola / 2, 100, SDL_MapRGB(plansza.getPtr()->format, 0x00, 0x00, 0x00));
+		}
 	}
-	else if (x < 180 && 320 < y)
+	else
 	{
-		DrawX(plansza.getPtr(), 90, 400, 100, SDL_MapRGB(plansza.getPtr()->format, 0x00, 0x00, 0x00));
-	}
-	else if (180 < x < 360 && y < 160)
-	{
-		DrawX(plansza.getPtr(), 270, 80, 100, SDL_MapRGB(plansza.getPtr()->format, 0x00, 0x00, 0x00));
-	}
-	else if (360 < x && y < 160)
-	{
-		DrawX(plansza.getPtr(), 450, 80, 100, SDL_MapRGB(plansza.getPtr()->format, 0x00, 0x00, 0x00));
-	}
-	else if (180 < x < 360 && 160 < y < 320)
-	{
-		DrawX(plansza.getPtr(), 270, 240, 100, SDL_MapRGB(plansza.getPtr()->format, 0x00, 0x00, 0x00));
-	}
-	else if (360 < x && 160 < y < 320)
-	{
-		DrawX(plansza.getPtr(), 450, 240, 100, SDL_MapRGB(plansza.getPtr()->format, 0x00, 0x00, 0x00));
-	}
-	else if (360 < x && 320 < y)
-	{
-		DrawX(plansza.getPtr(), 450, 400, 100, SDL_MapRGB(plansza.getPtr()->format, 0x00, 0x00, 0x00));
-	}
-	else if (180 < x < 360 && 320 < y)
-	{
-		DrawX(plansza.getPtr(), 270, 400, 100, SDL_MapRGB(plansza.getPtr()->format, 0x00, 0x00, 0x00));
+		int x_poz = SCREEN_WIDTH - szerokosc_pola / 2;
+		if (y < SCREEN_HEIGHT / 3) // lewy gorny
+		{
+			DrawX(plansza.getPtr(), x_poz, SCREEN_HEIGHT / 3 - wysokosc_pola / 2, 100, SDL_MapRGB(plansza.getPtr()->format, 0x00, 0x00, 0x00));
+		}
+		else if (y < 2 * (SCREEN_HEIGHT / 3)) // lewy srodkowy
+		{
+			DrawX(plansza.getPtr(), x_poz, 2 * (SCREEN_HEIGHT / 3) - wysokosc_pola / 2, 100, SDL_MapRGB(plansza.getPtr()->format, 0x00, 0x00, 0x00));
+		}
+		else // lewy dolny
+		{
+			DrawX(plansza.getPtr(), x_poz, SCREEN_HEIGHT - wysokosc_pola / 2, 100, SDL_MapRGB(plansza.getPtr()->format, 0x00, 0x00, 0x00));
+		}
 	}
 }
 
 
 
+void postaw_o(int x, int y, Surface& plansza, Surface& kolo)
+{
+	int szerokosc_pola = SCREEN_WIDTH / 3;
+	int wysokosc_pola = SCREEN_HEIGHT / 3;
+
+	x = (x + 1) * (SCREEN_WIDTH / 3) - szerokosc_pola / 2;
+	y = (y + 1) * (SCREEN_HEIGHT / 3) - wysokosc_pola / 2;
+
+	if (x < SCREEN_WIDTH / 3)
+	{
+		int x_poz = SCREEN_WIDTH / 3 - szerokosc_pola / 2;
+		if (y < SCREEN_HEIGHT / 3) // lewy gorny
+		{
+			DrawSurface(plansza.getPtr(), kolo.getPtr(), x_poz, SCREEN_HEIGHT / 3 - wysokosc_pola / 2);
+		}
+		else if (y < 2 * (SCREEN_HEIGHT / 3)) // lewy srodkowy
+		{
+			DrawSurface(plansza.getPtr(), kolo.getPtr(), x_poz, 2 * (SCREEN_HEIGHT / 3) - wysokosc_pola / 2);
+		}
+		else // lewy dolny
+		{
+			DrawSurface(plansza.getPtr(), kolo.getPtr(), x_poz, SCREEN_HEIGHT - wysokosc_pola / 2);
+		}
+	}
+	else if (x < 2 * (SCREEN_WIDTH / 3))
+	{
+		int x_poz = 2 * (SCREEN_WIDTH / 3) - szerokosc_pola / 2;
+		if (y < SCREEN_HEIGHT / 3) // lewy gorny
+		{
+			DrawSurface(plansza.getPtr(), kolo.getPtr(), x_poz, SCREEN_HEIGHT / 3 - wysokosc_pola / 2);
+		}
+		else if (y < 2 * (SCREEN_HEIGHT / 3)) // lewy srodkowy
+		{
+			DrawSurface(plansza.getPtr(), kolo.getPtr(), x_poz, 2 * (SCREEN_HEIGHT / 3) - wysokosc_pola / 2);
+		}
+		else // lewy dolny
+		{
+			DrawSurface(plansza.getPtr(), kolo.getPtr(), x_poz, SCREEN_HEIGHT - wysokosc_pola / 2);
+		}
+	}
+	else
+	{
+		int x_poz = SCREEN_WIDTH - szerokosc_pola / 2;
+		if (y < SCREEN_HEIGHT / 3) // lewy gorny
+		{
+			DrawSurface(plansza.getPtr(), kolo.getPtr(), x_poz, SCREEN_HEIGHT / 3 - wysokosc_pola / 2);
+		}
+		else if (y < 2 * (SCREEN_HEIGHT / 3)) // lewy srodkowy
+		{
+			DrawSurface(plansza.getPtr(), kolo.getPtr(), x_poz, 2 * (SCREEN_HEIGHT / 3) - wysokosc_pola / 2);
+		}
+		else // lewy dolny
+		{
+			DrawSurface(plansza.getPtr(), kolo.getPtr(), x_poz, SCREEN_HEIGHT - wysokosc_pola / 2);
+		}
+	}
+}
+
+
+struct indeksy
+{
+	int i;
+	int j;
+
+	indeksy(int i, int j)
+	{
+		this->i = i;
+		this->j = j;
+	}
+};
+
+
+
+indeksy indeksy_pola(int mx, int my)
+{
+	int szerokosc_pola = SCREEN_WIDTH / 3;
+	int wysokosc_pola = SCREEN_HEIGHT / 3;
+
+	if (mx < SCREEN_WIDTH / 3)
+	{
+		int x_poz = SCREEN_WIDTH / 3 - szerokosc_pola / 2;
+		if (my < SCREEN_HEIGHT / 3) // lewy gorny
+		{
+			return indeksy(0, 0);
+		}
+		else if (my < 2 * (SCREEN_HEIGHT / 3)) // lewy srodkowy
+		{
+			return indeksy(0, 1);
+		}
+		else // lewy dolny
+		{
+			return indeksy(0, 2);
+		}
+	}
+	else if (mx < 2 * (SCREEN_WIDTH / 3))
+	{
+		int x_poz = 2 * (SCREEN_WIDTH / 3) - szerokosc_pola / 2;
+		if (my < SCREEN_HEIGHT / 3) // lewy gorny
+		{
+			return indeksy(1, 0);
+		}
+		else if (my < 2 * (SCREEN_HEIGHT / 3)) // lewy srodkowy
+		{
+			return indeksy(1, 1);
+		}
+		else // lewy dolny
+		{
+			return indeksy(1, 2);
+		}
+	}
+	else
+	{
+		int x_poz = SCREEN_WIDTH - szerokosc_pola / 2;
+		if (my < SCREEN_HEIGHT / 3) // lewy gorny
+		{
+			return indeksy(2, 0);
+		}
+		else if (my < 2 * (SCREEN_HEIGHT / 3)) // lewy srodkowy
+		{
+			return indeksy(2, 1);
+		}
+		else // lewy dolny
+		{
+			return indeksy(2, 2);
+		}
+	}
+}
+
+
+int sprawdz_wygrana(int plansza2[3][3], int gracz)
+{
+	if (plansza2[0][0] + plansza2[1][1] + plansza2[2][2] == 3 * gracz) return gracz;
+	else if (plansza2[0][2] + plansza2[1][1] + plansza2[2][0] == 3 * gracz) return gracz;
+	else if (plansza2[0][0] + plansza2[0][1] + plansza2[0][2] == 3 * gracz) return gracz;
+	else if (plansza2[1][0] + plansza2[1][1] + plansza2[1][2] == 3 * gracz) return gracz;
+	else if (plansza2[2][0] + plansza2[2][1] + plansza2[2][2] == 3 * gracz) return gracz;
+	else if (plansza2[0][0] + plansza2[1][0] + plansza2[2][0] == 3 * gracz) return gracz;
+	else if (plansza2[0][1] + plansza2[1][1] + plansza2[2][1] == 3 * gracz) return gracz;
+	else if (plansza2[0][2] + plansza2[1][2] + plansza2[2][2] == 3 * gracz) return gracz;
+	else return 0;
+}
+
+
+bool wstaw_do_tab(int gracz, int plansza2[3][3], int mx, int my)
+{
+	indeksy ind = indeksy_pola(mx, my);
+
+	if (plansza2[ind.j][ind.i] != puste)
+	{
+		return false;
+	}
+
+	if (gracz == 1)
+		plansza2[ind.j][ind.i] = gracz1;
+	else
+		plansza2[ind.j][ind.i] = gracz2;
+
+	return true;
+}
+
+
 int main(int argc, char **argv)
 {
+	int x_i_o[3][3] = { {puste, puste, puste}, {puste, puste, puste}, {puste, puste, puste}};
+	int gracz = gracz1;
+	int wynik;
+	bool czy_remis = false;
+	bool czy_wykonac = true;
+	int ile_rund = 0;
+
+
+
+
 	srand(time(0)); // seed rand
 
 	// okno konsoli nie jest widoczne, je¿eli chcemy zobaczyæ
@@ -208,6 +402,20 @@ int main(int argc, char **argv)
 		DrawLine(screen, 0, 2 * (SCREEN_HEIGHT / 3) + 1, SCREEN_WIDTH, 1, 0, czarny);
 		DrawLine(screen, 0, 2 * (SCREEN_HEIGHT / 3) + 2, SCREEN_WIDTH, 1, 0, czarny);
 
+		for (int i = 0; i < 3; i++)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				if (x_i_o[i][j] == gracz1)
+				{
+					postaw_o(j, i, plansza, kolo);
+				}
+				else if (x_i_o[i][j] == gracz2)
+				{
+						postaw_x(j, i, plansza);
+				}
+			}
+		}
 
 
 		DrawSurface(screen, kursor.getPtr(), mx, my);
@@ -242,6 +450,7 @@ int main(int argc, char **argv)
 
 		//DrawSurface(screen, gracz.getPtr(), x, y);
 	
+
 		//// kopiowanie wybranego kawa³ka 
 		//SDL_Rect rectangle;
 		//rectangle.x = player1.x - (SCREEN_WIDTH / 2);
@@ -261,8 +470,6 @@ int main(int argc, char **argv)
 		//DrawString(screen, screen->w / 2 - strlen(text) * 8 / 2, 26, text, charset);
 
 
-
-
 		SDL_UpdateTexture(scrtex, NULL, screen->pixels, screen->pitch);
 //		SDL_RenderClear(renderer);
 		SDL_RenderCopy(renderer, scrtex, NULL, NULL);
@@ -280,42 +487,53 @@ int main(int argc, char **argv)
 			switch(event.type)
 			{
 				case SDL_MOUSEBUTTONDOWN:
-
 					switch (event.button.button)
 					{
-						case SDL_BUTTON_LEFT:
+					case SDL_BUTTON_LEFT:
+						if (czy_wykonac)
+						{
 							if (czy_x)
 							{
-								postaw_x(mx, my, plansza);
+								if (wstaw_do_tab(gracz2, x_i_o, mx, my))
+									if (sprawdz_wygrana(x_i_o, gracz2))
+									{
+										czy_wykonac = false;
+										DrawString(plansza.getPtr(), SCREEN_WIDTH / 2 - 50, SCREEN_HEIGHT / 2, "Wygral gracz X", charset.getPtr());
+									}
 								czy_x = false;
 							}
 							else
 							{
-								DrawSurface(plansza.getPtr(), kolo.getPtr(), mx, my);
+								if (wstaw_do_tab(gracz1, x_i_o, mx, my))
+									if (sprawdz_wygrana(x_i_o, gracz1))
+									{
+										czy_wykonac = false;
+										DrawString(plansza.getPtr(), SCREEN_WIDTH / 2 - 50, SCREEN_HEIGHT / 2, "Wygral gracz O", charset.getPtr());
+									}
 								czy_x = true;
 							}
 
+							ile_rund++;
+						}
+						else
+						{
+							if (czy_remis)
+								DrawString(plansza.getPtr(), SCREEN_WIDTH / 2 - 23, SCREEN_HEIGHT / 2, "REMIS", charset.getPtr());
+						}
+						if (ile_rund == 8)
+						{
+							czy_wykonac = false;
+							czy_remis = true;
+						}
+						break;
 
-							cout << "mx: " << mx << " ";
-							cout << "my: " << my << endl;
-
-							
-
-							break;
 					}
-
 					break;
-
-					//if (event.button.button = SDL_BUTTON_LEFT)
-					//{
-					//	cout << "mx: " << mx << " ";
-					//	cout << "my: " << my << endl;
-					//}
 
 				case SDL_KEYDOWN:
 					/*cout << "x: " << x << " y: " << y << endl; */
 
-					if(event.key.keysym.sym == SDLK_ESCAPE)
+					if(event.key.keysym.sym == SDLK_SPACE)
 						quit = true;
 
 					else if(event.key.keysym.sym == SDLK_UP)
