@@ -10,279 +10,24 @@
 #include "functions.h"
 #include <iostream>
 
+#include "stale.h"
+#include "Surface.h"
+#include "mechanikaGry.h"
+
 using namespace std;
 
-#define SCREEN_WIDTH 540
-#define SCREEN_HEIGHT 480
 
 #ifdef __cplusplus
 extern "C"
 #endif
 
 
-int gracz1 = 1;
-int gracz2 = 4;
-int puste = 0;
-
-
-class Surface
-{
-private:
-	// Pola.
-	SDL_Surface *ptr;
-
-public:
-	// Konstruktor.
-	Surface(string bmpfile)
-	{
-		ptr = IMG_Load(bmpfile.c_str());
-		if(ptr == NULL)
-			throw exception("IMG_Load failed.");
-	}
-
-	// Metoda zwaracaj¹ca oryginalny wskaŸnik.
-	SDL_Surface* getPtr()
-	{
-		return ptr;
-	}
-
-	// Destruktor.
-	~Surface()
-	{
-		SDL_FreeSurface(this->ptr);
-	}
-};
-
-
-
-void postaw_x(int x, int y, Surface& plansza)
-{
-	int szerokosc_pola = SCREEN_WIDTH / 3;
-	int wysokosc_pola = SCREEN_HEIGHT / 3;
-
-	x = (x + 1) * (SCREEN_WIDTH / 3) - szerokosc_pola / 2;
-	y = (y + 1) * (SCREEN_HEIGHT / 3) - wysokosc_pola / 2;
-	
-	if (x < SCREEN_WIDTH / 3)
-	{
-		int x_poz = SCREEN_WIDTH / 3 - szerokosc_pola / 2;
-		if (y < SCREEN_HEIGHT / 3) // lewy gorny
-		{
-			DrawX(plansza.getPtr(), x_poz, SCREEN_HEIGHT / 3 - wysokosc_pola / 2, 100, SDL_MapRGB(plansza.getPtr()->format, 0x00, 0x00, 0x00));
-		}
-		else if (y < 2 * (SCREEN_HEIGHT / 3)) // lewy srodkowy
-		{
-			DrawX(plansza.getPtr(), x_poz, 2 * (SCREEN_HEIGHT / 3) - wysokosc_pola / 2, 100, SDL_MapRGB(plansza.getPtr()->format, 0x00, 0x00, 0x00));
-		}
-		else // lewy dolny
-		{
-			DrawX(plansza.getPtr(), x_poz, SCREEN_HEIGHT - wysokosc_pola / 2, 100, SDL_MapRGB(plansza.getPtr()->format, 0x00, 0x00, 0x00));
-		}
-	}
-	else if (x < 2 * (SCREEN_WIDTH / 3))
-	{
-		int x_poz = 2 * (SCREEN_WIDTH / 3) - szerokosc_pola / 2;
-		if (y < SCREEN_HEIGHT / 3) // lewy gorny
-		{
-			DrawX(plansza.getPtr(), x_poz, SCREEN_HEIGHT / 3 - wysokosc_pola / 2, 100, SDL_MapRGB(plansza.getPtr()->format, 0x00, 0x00, 0x00));
-		}
-		else if (y < 2 * (SCREEN_HEIGHT / 3)) // lewy srodkowy
-		{
-			DrawX(plansza.getPtr(), x_poz, 2 * (SCREEN_HEIGHT / 3) - wysokosc_pola / 2, 100, SDL_MapRGB(plansza.getPtr()->format, 0x00, 0x00, 0x00));
-		}
-		else // lewy dolny
-		{
-			DrawX(plansza.getPtr(), x_poz, SCREEN_HEIGHT - wysokosc_pola / 2, 100, SDL_MapRGB(plansza.getPtr()->format, 0x00, 0x00, 0x00));
-		}
-	}
-	else
-	{
-		int x_poz = SCREEN_WIDTH - szerokosc_pola / 2;
-		if (y < SCREEN_HEIGHT / 3) // lewy gorny
-		{
-			DrawX(plansza.getPtr(), x_poz, SCREEN_HEIGHT / 3 - wysokosc_pola / 2, 100, SDL_MapRGB(plansza.getPtr()->format, 0x00, 0x00, 0x00));
-		}
-		else if (y < 2 * (SCREEN_HEIGHT / 3)) // lewy srodkowy
-		{
-			DrawX(plansza.getPtr(), x_poz, 2 * (SCREEN_HEIGHT / 3) - wysokosc_pola / 2, 100, SDL_MapRGB(plansza.getPtr()->format, 0x00, 0x00, 0x00));
-		}
-		else // lewy dolny
-		{
-			DrawX(plansza.getPtr(), x_poz, SCREEN_HEIGHT - wysokosc_pola / 2, 100, SDL_MapRGB(plansza.getPtr()->format, 0x00, 0x00, 0x00));
-		}
-	}
-}
-
-
-
-void postaw_o(int x, int y, Surface& plansza, Surface& kolo)
-{
-	int szerokosc_pola = SCREEN_WIDTH / 3;
-	int wysokosc_pola = SCREEN_HEIGHT / 3;
-
-	x = (x + 1) * (SCREEN_WIDTH / 3) - szerokosc_pola / 2;
-	y = (y + 1) * (SCREEN_HEIGHT / 3) - wysokosc_pola / 2;
-
-	if (x < SCREEN_WIDTH / 3)
-	{
-		int x_poz = SCREEN_WIDTH / 3 - szerokosc_pola / 2;
-		if (y < SCREEN_HEIGHT / 3) // lewy gorny
-		{
-			DrawSurface(plansza.getPtr(), kolo.getPtr(), x_poz, SCREEN_HEIGHT / 3 - wysokosc_pola / 2);
-		}
-		else if (y < 2 * (SCREEN_HEIGHT / 3)) // lewy srodkowy
-		{
-			DrawSurface(plansza.getPtr(), kolo.getPtr(), x_poz, 2 * (SCREEN_HEIGHT / 3) - wysokosc_pola / 2);
-		}
-		else // lewy dolny
-		{
-			DrawSurface(plansza.getPtr(), kolo.getPtr(), x_poz, SCREEN_HEIGHT - wysokosc_pola / 2);
-		}
-	}
-	else if (x < 2 * (SCREEN_WIDTH / 3))
-	{
-		int x_poz = 2 * (SCREEN_WIDTH / 3) - szerokosc_pola / 2;
-		if (y < SCREEN_HEIGHT / 3) // lewy gorny
-		{
-			DrawSurface(plansza.getPtr(), kolo.getPtr(), x_poz, SCREEN_HEIGHT / 3 - wysokosc_pola / 2);
-		}
-		else if (y < 2 * (SCREEN_HEIGHT / 3)) // lewy srodkowy
-		{
-			DrawSurface(plansza.getPtr(), kolo.getPtr(), x_poz, 2 * (SCREEN_HEIGHT / 3) - wysokosc_pola / 2);
-		}
-		else // lewy dolny
-		{
-			DrawSurface(plansza.getPtr(), kolo.getPtr(), x_poz, SCREEN_HEIGHT - wysokosc_pola / 2);
-		}
-	}
-	else
-	{
-		int x_poz = SCREEN_WIDTH - szerokosc_pola / 2;
-		if (y < SCREEN_HEIGHT / 3) // lewy gorny
-		{
-			DrawSurface(plansza.getPtr(), kolo.getPtr(), x_poz, SCREEN_HEIGHT / 3 - wysokosc_pola / 2);
-		}
-		else if (y < 2 * (SCREEN_HEIGHT / 3)) // lewy srodkowy
-		{
-			DrawSurface(plansza.getPtr(), kolo.getPtr(), x_poz, 2 * (SCREEN_HEIGHT / 3) - wysokosc_pola / 2);
-		}
-		else // lewy dolny
-		{
-			DrawSurface(plansza.getPtr(), kolo.getPtr(), x_poz, SCREEN_HEIGHT - wysokosc_pola / 2);
-		}
-	}
-}
-
-
-struct indeksy
-{
-	int i;
-	int j;
-
-	indeksy(int i, int j)
-	{
-		this->i = i;
-		this->j = j;
-	}
-};
-
-
-
-indeksy indeksy_pola(int mx, int my)
-{
-	int szerokosc_pola = SCREEN_WIDTH / 3;
-	int wysokosc_pola = SCREEN_HEIGHT / 3;
-
-	if (mx < SCREEN_WIDTH / 3)
-	{
-		int x_poz = SCREEN_WIDTH / 3 - szerokosc_pola / 2;
-		if (my < SCREEN_HEIGHT / 3) // lewy gorny
-		{
-			return indeksy(0, 0);
-		}
-		else if (my < 2 * (SCREEN_HEIGHT / 3)) // lewy srodkowy
-		{
-			return indeksy(0, 1);
-		}
-		else // lewy dolny
-		{
-			return indeksy(0, 2);
-		}
-	}
-	else if (mx < 2 * (SCREEN_WIDTH / 3))
-	{
-		int x_poz = 2 * (SCREEN_WIDTH / 3) - szerokosc_pola / 2;
-		if (my < SCREEN_HEIGHT / 3) // lewy gorny
-		{
-			return indeksy(1, 0);
-		}
-		else if (my < 2 * (SCREEN_HEIGHT / 3)) // lewy srodkowy
-		{
-			return indeksy(1, 1);
-		}
-		else // lewy dolny
-		{
-			return indeksy(1, 2);
-		}
-	}
-	else
-	{
-		int x_poz = SCREEN_WIDTH - szerokosc_pola / 2;
-		if (my < SCREEN_HEIGHT / 3) // lewy gorny
-		{
-			return indeksy(2, 0);
-		}
-		else if (my < 2 * (SCREEN_HEIGHT / 3)) // lewy srodkowy
-		{
-			return indeksy(2, 1);
-		}
-		else // lewy dolny
-		{
-			return indeksy(2, 2);
-		}
-	}
-}
-
-
-int sprawdz_wygrana(int plansza2[3][3], int gracz)
-{
-	if (plansza2[0][0] + plansza2[1][1] + plansza2[2][2] == 3 * gracz) return gracz;
-	else if (plansza2[0][2] + plansza2[1][1] + plansza2[2][0] == 3 * gracz) return gracz;
-	else if (plansza2[0][0] + plansza2[0][1] + plansza2[0][2] == 3 * gracz) return gracz;
-	else if (plansza2[1][0] + plansza2[1][1] + plansza2[1][2] == 3 * gracz) return gracz;
-	else if (plansza2[2][0] + plansza2[2][1] + plansza2[2][2] == 3 * gracz) return gracz;
-	else if (plansza2[0][0] + plansza2[1][0] + plansza2[2][0] == 3 * gracz) return gracz;
-	else if (plansza2[0][1] + plansza2[1][1] + plansza2[2][1] == 3 * gracz) return gracz;
-	else if (plansza2[0][2] + plansza2[1][2] + plansza2[2][2] == 3 * gracz) return gracz;
-	else return 0;
-}
-
-
-bool wstaw_do_tab(int gracz, int plansza2[3][3], int mx, int my)
-{
-	indeksy ind = indeksy_pola(mx, my);
-
-	if (plansza2[ind.j][ind.i] != puste)
-	{
-		return false;
-	}
-
-	if (gracz == 1)
-		plansza2[ind.j][ind.i] = gracz1;
-	else
-		plansza2[ind.j][ind.i] = gracz2;
-
-	return true;
-}
-
-
 int main(int argc, char **argv)
 {
-	int x_i_o[3][3] = { {puste, puste, puste}, {puste, puste, puste}, {puste, puste, puste}};
-	int gracz = gracz1;
+	int x_i_o[3][3] = { {PUSTE, PUSTE, PUSTE}, {PUSTE, PUSTE, PUSTE}, {PUSTE, PUSTE, PUSTE}};
+	int gracz = GRACZ1;
 	int wynik;
-	bool czy_remis = false;
-	bool czy_wykonac = true;
+	bool czy_gra_trwa = true;
 	int ile_rund = 0;
 
 
@@ -406,11 +151,11 @@ int main(int argc, char **argv)
 		{
 			for (int j = 0; j < 3; j++)
 			{
-				if (x_i_o[i][j] == gracz1)
+				if (x_i_o[i][j] == GRACZ1)
 				{
 					postaw_o(j, i, plansza, kolo);
 				}
-				else if (x_i_o[i][j] == gracz2)
+				else if (x_i_o[i][j] == GRACZ2)
 				{
 						postaw_x(j, i, plansza);
 				}
@@ -490,42 +235,53 @@ int main(int argc, char **argv)
 					switch (event.button.button)
 					{
 					case SDL_BUTTON_LEFT:
-						if (czy_wykonac)
+
+						if (czy_gra_trwa)
 						{
-							if (czy_x)
+							if (czy_x) // ruch x
 							{
-								if (wstaw_do_tab(gracz2, x_i_o, mx, my))
-									if (sprawdz_wygrana(x_i_o, gracz2))
+								if (wstaw_do_tab(GRACZ2, x_i_o, mx, my))
+								{
+									if (sprawdz_wygrana(x_i_o, GRACZ2))
 									{
-										czy_wykonac = false;
+										czy_gra_trwa = false;
 										DrawString(plansza.getPtr(), SCREEN_WIDTH / 2 - 50, SCREEN_HEIGHT / 2, "Wygral gracz X", charset.getPtr());
 									}
+
+									ile_rund++;
+								}
+
 								czy_x = false;
 							}
-							else
+							else // ruch o
 							{
-								if (wstaw_do_tab(gracz1, x_i_o, mx, my))
-									if (sprawdz_wygrana(x_i_o, gracz1))
+								//if (wstaw_do_tab(GRACZ1, x_i_o, mx, my))
+								if (wstaw_do_tab_si(GRACZ1, x_i_o))
+								{
+									if (sprawdz_wygrana(x_i_o, GRACZ1))
 									{
-										czy_wykonac = false;
+										czy_gra_trwa = false;
 										DrawString(plansza.getPtr(), SCREEN_WIDTH / 2 - 50, SCREEN_HEIGHT / 2, "Wygral gracz O", charset.getPtr());
 									}
+
+									ile_rund++;
+								}
+
 								czy_x = true;
 							}
 
-							ile_rund++;
+							
+								
 						}
-						else
+
+						if (czy_gra_trwa && ile_rund == 9)
 						{
-							if (czy_remis)
+								czy_gra_trwa = false;
 								DrawString(plansza.getPtr(), SCREEN_WIDTH / 2 - 23, SCREEN_HEIGHT / 2, "REMIS", charset.getPtr());
 						}
-						if (ile_rund == 8)
-						{
-							czy_wykonac = false;
-							czy_remis = true;
-						}
+
 						break;
+
 
 					}
 					break;

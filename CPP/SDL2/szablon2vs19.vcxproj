@@ -21,7 +21,10 @@
   <ItemGroup>
     <ClCompile Include="drawing.cpp" />
     <ClCompile Include="functions.cpp" />
+    <ClCompile Include="Indeksy.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="mechanikaGry.cpp" />
+    <ClCompile Include="Surface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="cs8x8.bmp" />
@@ -30,6 +33,10 @@
   <ItemGroup>
     <ClInclude Include="drawing.h" />
     <ClInclude Include="functions.h" />
+    <ClInclude Include="Indeksy.h" />
+    <ClInclude Include="mechanikaGry.h" />
+    <ClInclude Include="stale.h" />
+    <ClInclude Include="Surface.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
