@@ -15,6 +15,9 @@
     <ClCompile Include="Indeksy.cpp">
       <Filter>gra</Filter>
     </ClCompile>
+    <ClCompile Include="KolkoIKrzyzyk.cpp">
+      <Filter>gra</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="functions.h" />
@@ -31,6 +34,9 @@
       <Filter>gra</Filter>
     </ClInclude>
     <ClInclude Include="stale.h" />
+    <ClInclude Include="KolkoIKrzyzyk.h">
+      <Filter>gra</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="cs8x8.bmp" />

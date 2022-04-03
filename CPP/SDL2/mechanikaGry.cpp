@@ -175,33 +175,6 @@ Indeksy indeksy_pola(int mx, int my)
 }
 
 
-int sprawdz_wygrana(int plansza2[3][3], int gracz)
-{
-	if (plansza2[0][0] + plansza2[1][1] + plansza2[2][2] == 3 * gracz) return gracz;
-	else if (plansza2[0][2] + plansza2[1][1] + plansza2[2][0] == 3 * gracz) return gracz;
-	else if (plansza2[0][0] + plansza2[0][1] + plansza2[0][2] == 3 * gracz) return gracz;
-	else if (plansza2[1][0] + plansza2[1][1] + plansza2[1][2] == 3 * gracz) return gracz;
-	else if (plansza2[2][0] + plansza2[2][1] + plansza2[2][2] == 3 * gracz) return gracz;
-	else if (plansza2[0][0] + plansza2[1][0] + plansza2[2][0] == 3 * gracz) return gracz;
-	else if (plansza2[0][1] + plansza2[1][1] + plansza2[2][1] == 3 * gracz) return gracz;
-	else if (plansza2[0][2] + plansza2[1][2] + plansza2[2][2] == 3 * gracz) return gracz;
-	else return 0;
-}
 
 
-bool wstaw_do_tab(int gracz, int plansza2[3][3], int mx, int my)
-{
-	Indeksy ind = indeksy_pola(mx, my);
 
-	if (plansza2[ind.j][ind.i] != PUSTE)
-	{
-		return false;
-	}
-
-	if (gracz == 1)
-		plansza2[ind.j][ind.i] = GRACZ1;
-	else
-		plansza2[ind.j][ind.i] = GRACZ2;
-
-	return true;
-}

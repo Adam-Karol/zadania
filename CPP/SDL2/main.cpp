@@ -13,6 +13,8 @@
 #include "stale.h"
 #include "Surface.h"
 #include "mechanikaGry.h"
+#include "KolkoIKrzyzyk.h"
+#include "main.h"
 
 using namespace std;
 
@@ -24,14 +26,7 @@ extern "C"
 
 int main(int argc, char **argv)
 {
-	int x_i_o[3][3] = { {PUSTE, PUSTE, PUSTE}, {PUSTE, PUSTE, PUSTE}, {PUSTE, PUSTE, PUSTE}};
-	int gracz = GRACZ1;
-	int wynik;
-	bool czy_gra_trwa = true;
-	int ile_rund = 0;
-
-
-
+	KolkoIKrzyzyk kik;
 
 	srand(time(0)); // seed rand
 
@@ -148,19 +143,12 @@ int main(int argc, char **argv)
 		DrawLine(screen, 0, 2 * (SCREEN_HEIGHT / 3) + 2, SCREEN_WIDTH, 1, 0, czarny);
 
 		for (int i = 0; i < 3; i++)
-		{
 			for (int j = 0; j < 3; j++)
-			{
-				if (x_i_o[i][j] == GRACZ1)
-				{
+				//if ( x_i_o[i][j] == GRACZ1)
+				if (kik.wartoscPola(i, j) == GRACZ1)
 					postaw_o(j, i, plansza, kolo);
-				}
-				else if (x_i_o[i][j] == GRACZ2)
-				{
-						postaw_x(j, i, plansza);
-				}
-			}
-		}
+				else if (kik.wartoscPola(i, j) == GRACZ2)
+					postaw_x(j, i, plansza);
 
 
 		DrawSurface(screen, kursor.getPtr(), mx, my);
@@ -236,15 +224,19 @@ int main(int argc, char **argv)
 					{
 					case SDL_BUTTON_LEFT:
 
-						if (czy_gra_trwa)
+						//if (czy_gra_trwa)
+						if (kik.czyGraTrwa())
 						{
 							if (czy_x) // ruch x
 							{
-								if (wstaw_do_tab(GRACZ2, x_i_o, mx, my))
+								//if (wstaw_do_tab(GRACZ2, x_i_o, mx, my))
+								if (kik.wstawDoTab(GRACZ2, mx, my))
 								{
-									if (sprawdz_wygrana(x_i_o, GRACZ2))
+									//if (sprawdz_wygrana(x_i_o, GRACZ2))
+									if (kik.sprawdzWygrana(GRACZ2))
 									{
-										czy_gra_trwa = false;
+										//czy_gra_trwa = false;
+										kik.zakonczGre();
 										DrawString(plansza.getPtr(), SCREEN_WIDTH / 2 - 50, SCREEN_HEIGHT / 2, "Wygral gracz X", charset.getPtr());
 									}
 
@@ -255,8 +247,8 @@ int main(int argc, char **argv)
 							}
 							else // ruch o
 							{
-								//if (wstaw_do_tab(GRACZ1, x_i_o, mx, my))
-								if (wstaw_do_tab_si(GRACZ1, x_i_o))
+								if (wstaw_do_tab(GRACZ1, x_i_o, mx, my))
+								//if (wstaw_do_tab_si(GRACZ1, x_i_o))
 								{
 									if (sprawdz_wygrana(x_i_o, GRACZ1))
 									{

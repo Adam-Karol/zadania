@@ -22,6 +22,7 @@
     <ClCompile Include="drawing.cpp" />
     <ClCompile Include="functions.cpp" />
     <ClCompile Include="Indeksy.cpp" />
+    <ClCompile Include="KolkoIKrzyzyk.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mechanikaGry.cpp" />
     <ClCompile Include="Surface.cpp" />
@@ -34,6 +35,7 @@
     <ClInclude Include="drawing.h" />
     <ClInclude Include="functions.h" />
     <ClInclude Include="Indeksy.h" />
+    <ClInclude Include="KolkoIKrzyzyk.h" />
     <ClInclude Include="mechanikaGry.h" />
     <ClInclude Include="stale.h" />
     <ClInclude Include="Surface.h" />
