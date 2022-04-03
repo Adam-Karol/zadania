@@ -19,5 +19,7 @@ public:
 	bool wstawDoTab(int gracz, int mx, int my);
 	bool sprawdzWygrana(int gracz);
 	void zakonczGre();
+	void zwieksz_runde();
+	int ktora_runda();
 
 };
