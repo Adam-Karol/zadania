@@ -14,6 +14,7 @@
 #include "Surface.h"
 #include "mechanikaGry.h"
 #include "KolkoIKrzyzyk.h"
+#include "main.h"
 
 using namespace std;
 
@@ -239,23 +240,23 @@ int main(int argc, char **argv)
 										DrawString(plansza.getPtr(), SCREEN_WIDTH / 2 - 50, SCREEN_HEIGHT / 2, "Wygral gracz X", charset.getPtr());
 									}
 
-									kik.zwieksz_runde();
+									ile_rund++;
 								}
 
 								czy_x = false;
 							}
 							else // ruch o
 							{
-								if (kik.wstawDoTab(GRACZ1, mx, my))
+								if (wstaw_do_tab(GRACZ1, x_i_o, mx, my))
 								//if (wstaw_do_tab_si(GRACZ1, x_i_o))
 								{
-									if (kik.sprawdzWygrana(GRACZ1))
+									if (sprawdz_wygrana(x_i_o, GRACZ1))
 									{
-										kik.zakonczGre();
+										czy_gra_trwa = false;
 										DrawString(plansza.getPtr(), SCREEN_WIDTH / 2 - 50, SCREEN_HEIGHT / 2, "Wygral gracz O", charset.getPtr());
 									}
 
-									kik.zwieksz_runde();
+									ile_rund++;
 								}
 
 								czy_x = true;
@@ -265,9 +266,9 @@ int main(int argc, char **argv)
 								
 						}
 
-						if (kik.czyGraTrwa() && kik.ktora_runda() == 9)
+						if (czy_gra_trwa && ile_rund == 9)
 						{
-								kik.zakonczGre();
+								czy_gra_trwa = false;
 								DrawString(plansza.getPtr(), SCREEN_WIDTH / 2 - 23, SCREEN_HEIGHT / 2, "REMIS", charset.getPtr());
 						}
 

@@ -49,15 +49,3 @@ void KolkoIKrzyzyk::zakonczGre()
 {
 	this->gra_w_trakcie = false;
 }
-
-
-void KolkoIKrzyzyk::zwieksz_runde()
-{
-	this->ile_rund++;
-}
-
-
-int KolkoIKrzyzyk::ktora_runda()
-{
-	return this->ile_rund;
-}
