@@ -25,6 +25,7 @@
     <ClCompile Include="KolkoIKrzyzyk.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mechanikaGry.cpp" />
+    <ClCompile Include="SdlStruct.cpp" />
     <ClCompile Include="Surface.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -37,6 +38,7 @@
     <ClInclude Include="Indeksy.h" />
     <ClInclude Include="KolkoIKrzyzyk.h" />
     <ClInclude Include="mechanikaGry.h" />
+    <ClInclude Include="SdlStruct.h" />
     <ClInclude Include="stale.h" />
     <ClInclude Include="Surface.h" />
   </ItemGroup>
