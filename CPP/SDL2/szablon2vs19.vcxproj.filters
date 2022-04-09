@@ -18,9 +18,6 @@
     <ClCompile Include="KolkoIKrzyzyk.cpp">
       <Filter>gra</Filter>
     </ClCompile>
-    <ClCompile Include="SdlStruct.cpp">
-      <Filter>rysowanie</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="functions.h" />
@@ -39,9 +36,6 @@
     <ClInclude Include="stale.h" />
     <ClInclude Include="KolkoIKrzyzyk.h">
       <Filter>gra</Filter>
-    </ClInclude>
-    <ClInclude Include="SdlStruct.h">
-      <Filter>rysowanie</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
