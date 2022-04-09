@@ -32,6 +32,22 @@ bool KolkoIKrzyzyk::wstawDoTab(int gracz, int mx, int my)
 	return true;
 }
 
+bool KolkoIKrzyzyk::wstawDoTabSI(int gracz)
+{
+	Indeksy ind = losuj_indeksy();
+
+	if (this->plansza[ind.j][ind.i] != PUSTE)
+		return false;
+
+	if (gracz == 1)
+		this->plansza[ind.j][ind.i] = GRACZ1;
+	else
+		this->plansza[ind.j][ind.i] = GRACZ2;
+
+	return true;
+}
+
+
 bool KolkoIKrzyzyk::sprawdzWygrana(int gracz)
 {
 	if (plansza[0][0] + plansza[1][1] + plansza[2][2] == 3 * gracz) return true;
@@ -60,4 +76,14 @@ void KolkoIKrzyzyk::zwieksz_runde()
 int KolkoIKrzyzyk::ktora_runda()
 {
 	return this->ile_rund;
+}
+
+bool KolkoIKrzyzyk::czyX()
+{
+	return ruch_x;
+}
+
+void KolkoIKrzyzyk::zmienGracza()
+{
+	this->ruch_x = ! this->ruch_x;
 }
