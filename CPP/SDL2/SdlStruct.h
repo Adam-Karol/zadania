@@ -11,7 +11,7 @@ struct SdlStruct
 	int rc;
 	bool fullscreen = false; // Tryb pe³noekranowy.
 
-	SDL_Surface *screen;
+	Surface screen;
 	SDL_Texture *scrtex;
 
 	Surface* charset;

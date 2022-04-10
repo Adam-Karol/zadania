@@ -1,6 +1,11 @@
 #include "KolkoIKrzyzyk.h"
 #include "Indeksy.h"
 #include "mechanikaGry.h"
+#include "functions.h"
+#include <iostream>
+
+
+using namespace std;
 
 KolkoIKrzyzyk::KolkoIKrzyzyk()
 {
@@ -30,6 +35,14 @@ bool KolkoIKrzyzyk::wstawDoTab(int gracz, int mx, int my)
 		this->plansza[ind.j][ind.i] = GRACZ2;
 
 	return true;
+}
+
+Indeksy losuj_indeksy()
+{
+	Indeksy wylosowane(random(0, 3), random(0, 3));
+
+	cout << wylosowane.i << " " << wylosowane.j << endl;
+	return wylosowane;
 }
 
 bool KolkoIKrzyzyk::wstawDoTabSI(int gracz)
@@ -86,4 +99,21 @@ bool KolkoIKrzyzyk::czyX()
 void KolkoIKrzyzyk::zmienGracza()
 {
 	this->ruch_x = ! this->ruch_x;
+}
+
+
+void KolkoIKrzyzyk::restart()
+{
+	for (int i = 0; i < 3; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			plansza[i][j] = PUSTE;
+		}
+	}
+	//gracz = GRACZ1;
+	gra_w_trakcie = true;
+	ile_rund = 0;
+	ruch_x = false;
+
 }

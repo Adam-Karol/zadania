@@ -31,7 +31,7 @@ void SdlStruct::ustawUstawienia(std::string nazwaOkna)
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_SetWindowTitle(window, nazwaOkna.c_str());
 
-	this->screen = SDL_CreateRGBSurface(0, SCREEN_WIDTH, SCREEN_HEIGHT, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
+	this->screen.setPtr(SDL_CreateRGBSurface(0, SCREEN_WIDTH, SCREEN_HEIGHT, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000));
 	this->scrtex = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	// wy³¹czenie widocznoœci kursora myszy
@@ -58,10 +58,10 @@ void SdlStruct::uruchom()
 	this->t1 = SDL_GetTicks();
 	cout << "Time from sdl initialization: " << t1;
 
-	this->czarny = SDL_MapRGB(screen->format, 0x00, 0x00, 0x00);
-	this->zielony = SDL_MapRGB(screen->format, 0x00, 0xFF, 0x00);
-	this->czerwony = SDL_MapRGB(screen->format, 0xFF, 0x00, 0x00);
-	this->niebieski = SDL_MapRGB(screen->format, 0x11, 0x11, 0xCC);
+	this->czarny = SDL_MapRGB(screen.getPtr()->format, 0x00, 0x00, 0x00);
+	this->zielony = SDL_MapRGB(screen.getPtr()->format, 0x00, 0xFF, 0x00);
+	this->czerwony = SDL_MapRGB(screen.getPtr()->format, 0xFF, 0x00, 0x00);
+	this->niebieski = SDL_MapRGB(screen.getPtr()->format, 0x11, 0x11, 0xCC);
 }
 
 // w tym momencie t2-t1 to czas w milisekundach,
@@ -92,7 +92,7 @@ void SdlStruct::ticks()
 
 void SdlStruct::updateTextureAndRender()
 {
-	SDL_UpdateTexture(scrtex, NULL, screen->pixels, screen->pitch);
+	SDL_UpdateTexture(scrtex, NULL, screen.getPtr()->pixels, screen.getPtr()->pitch);
 	SDL_RenderCopy(renderer, scrtex, NULL, NULL);
 	SDL_RenderPresent(renderer);
 }

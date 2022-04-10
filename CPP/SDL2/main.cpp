@@ -18,6 +18,27 @@ using namespace std;
 extern "C"
 #endif
 
+void rysuj_plansze(SdlStruct &sdl, Surface &plansza)
+{
+	DrawSurface(sdl.screen.getPtr(), plansza.getPtr(), SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+
+	DrawLine(sdl.screen.getPtr(), SCREEN_WIDTH / 3, 0, SCREEN_HEIGHT, 0, 1, sdl.czarny);
+	DrawLine(sdl.screen.getPtr(), SCREEN_WIDTH / 3 + 1, 0, SCREEN_HEIGHT, 0, 1, sdl.czarny);
+	DrawLine(sdl.screen.getPtr(), SCREEN_WIDTH / 3 + 2, 0, SCREEN_HEIGHT, 0, 1, sdl.czarny);
+
+	DrawLine(sdl.screen.getPtr(), 2 * (SCREEN_WIDTH / 3), 0, SCREEN_HEIGHT, 0, 1, sdl.czarny);
+	DrawLine(sdl.screen.getPtr(), 2 * (SCREEN_WIDTH / 3) + 1, 0, SCREEN_HEIGHT, 0, 1, sdl.czarny);
+	DrawLine(sdl.screen.getPtr(), 2 * (SCREEN_WIDTH / 3) + 2, 0, SCREEN_HEIGHT, 0, 1, sdl.czarny);
+
+	DrawLine(sdl.screen.getPtr(), 0, SCREEN_HEIGHT / 3, SCREEN_WIDTH, 1, 0, sdl.czarny);
+	DrawLine(sdl.screen.getPtr(), 0, SCREEN_HEIGHT / 3 + 1, SCREEN_WIDTH, 1, 0, sdl.czarny);
+	DrawLine(sdl.screen.getPtr(), 0, SCREEN_HEIGHT / 3 + 2, SCREEN_WIDTH, 1, 0, sdl.czarny);
+
+	DrawLine(sdl.screen.getPtr(), 0, 2 * (SCREEN_HEIGHT / 3), SCREEN_WIDTH, 1, 0, sdl.czarny);
+	DrawLine(sdl.screen.getPtr(), 0, 2 * (SCREEN_HEIGHT / 3) + 1, SCREEN_WIDTH, 1, 0, sdl.czarny);
+	DrawLine(sdl.screen.getPtr(), 0, 2 * (SCREEN_HEIGHT / 3) + 2, SCREEN_WIDTH, 1, 0, sdl.czarny);
+}
+
 int main(int argc, char **argv)
 {
 	KolkoIKrzyzyk kik;
@@ -31,39 +52,23 @@ int main(int argc, char **argv)
 	Surface kursor("cursor.cur");
 	Surface kolo("./kolo.png");
 
+	rysuj_plansze(sdl, plansza);
+
 	// main loop of the game
 	bool quit = false;
 	while(quit == false)
 	{		
-		DrawSurface(sdl.screen, plansza.getPtr(), SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
-
-		DrawLine(sdl.screen, SCREEN_WIDTH / 3, 0, SCREEN_HEIGHT, 0, 1, sdl.czarny);
-		DrawLine(sdl.screen, SCREEN_WIDTH / 3 + 1, 0, SCREEN_HEIGHT, 0, 1, sdl.czarny);
-		DrawLine(sdl.screen, SCREEN_WIDTH / 3 + 2, 0, SCREEN_HEIGHT, 0, 1, sdl.czarny);
-
-		DrawLine(sdl.screen, 2 * (SCREEN_WIDTH / 3), 0, SCREEN_HEIGHT, 0, 1, sdl.czarny);
-		DrawLine(sdl.screen, 2 * (SCREEN_WIDTH / 3) + 1, 0, SCREEN_HEIGHT, 0, 1, sdl.czarny);
-		DrawLine(sdl.screen, 2 * (SCREEN_WIDTH / 3) + 2, 0, SCREEN_HEIGHT, 0, 1, sdl.czarny);
-
-		DrawLine(sdl.screen, 0, SCREEN_HEIGHT / 3, SCREEN_WIDTH, 1, 0, sdl.czarny);
-		DrawLine(sdl.screen, 0, SCREEN_HEIGHT / 3 + 1, SCREEN_WIDTH, 1, 0, sdl.czarny);
-		DrawLine(sdl.screen, 0, SCREEN_HEIGHT / 3 + 2, SCREEN_WIDTH, 1, 0, sdl.czarny);
-
-		DrawLine(sdl.screen, 0, 2 * (SCREEN_HEIGHT / 3), SCREEN_WIDTH, 1, 0, sdl.czarny);
-		DrawLine(sdl.screen, 0, 2 * (SCREEN_HEIGHT / 3) + 1, SCREEN_WIDTH, 1, 0, sdl.czarny);
-		DrawLine(sdl.screen, 0, 2 * (SCREEN_HEIGHT / 3) + 2, SCREEN_WIDTH, 1, 0, sdl.czarny);
-
-
+		
 
 		for (int i = 0; i < 3; i++)
 			for (int j = 0; j < 3; j++)
 				if (kik.wartoscPola(i, j) == GRACZ1)
-					postaw_o(j, i, plansza, kolo);
+					postaw_o(j, i, sdl.screen, kolo);
 				else if (kik.wartoscPola(i, j) == GRACZ2)
-					postaw_x(j, i, plansza);
+					postaw_x(j, i, sdl.screen);
 
 
-		DrawSurface(sdl.screen, kursor.getPtr(), sdl.mx, sdl.my);
+		DrawSurface(sdl.screen.getPtr(), kursor.getPtr(), sdl.mx, sdl.my);
 
 		sdl.ticks();
 		sdl.updateTextureAndRender();
@@ -94,30 +99,15 @@ int main(int argc, char **argv)
 									{
 										//czy_gra_trwa = false;
 										kik.zakonczGre();
-										DrawString(plansza.getPtr(), SCREEN_WIDTH / 2 - 50, SCREEN_HEIGHT / 2, "Wygral gracz X", sdl.charset->getPtr());
+										DrawString(sdl.screen.getPtr(), SCREEN_WIDTH / 2 - 50, SCREEN_HEIGHT / 2, "Wygral gracz X", sdl.charset->getPtr());
 									}
 
 									kik.zwieksz_runde();
+									kik.zmienGracza();
+
 								}
 
-								kik.zmienGracza();
 
-							}
-							else // ruch o
-							{
-								//if (kik.wstawDoTab(GRACZ1, sdl.mx, sdl.my))
-								if (kik.wstawDoTabSI(GRACZ1))
-								{
-									if (kik.sprawdzWygrana(GRACZ1))
-									{
-										kik.zakonczGre();
-										DrawString(plansza.getPtr(), SCREEN_WIDTH / 2 - 50, SCREEN_HEIGHT / 2, "Wygral gracz O", sdl.charset->getPtr());
-									}
-
-									kik.zwieksz_runde();
-								}
-
-								kik.zmienGracza();
 							}
 
 							
@@ -127,7 +117,7 @@ int main(int argc, char **argv)
 						if (kik.czyGraTrwa() && kik.ktora_runda() == 9)
 						{
 								kik.zakonczGre();
-								DrawString(plansza.getPtr(), SCREEN_WIDTH / 2 - 23, SCREEN_HEIGHT / 2, "REMIS", sdl.charset->getPtr());
+								DrawString(sdl.screen.getPtr(), SCREEN_WIDTH / 2 - 23, SCREEN_HEIGHT / 2, "REMIS", sdl.charset->getPtr());
 						}
 
 						break;
@@ -141,6 +131,13 @@ int main(int argc, char **argv)
 					if(event.key.keysym.sym == SDLK_SPACE)
 						quit = true;
 
+					
+					if (event.key.keysym.sym == SDLK_r)
+					{
+						kik.restart();
+						SDL_FillRect(sdl.screen.getPtr(), NULL, sdl.czarny);
+					}
+
 
 					break;
 
@@ -149,6 +146,28 @@ int main(int argc, char **argv)
 					break;
 			}
 		}
+
+		if (kik.czyGraTrwa())
+		{
+			if (!kik.czyX()) // ruch o
+			{
+				//if (kik.wstawDoTab(GRACZ1, sdl.mx, sdl.my))
+				if (kik.wstawDoTabSI(GRACZ1))
+				{
+					if (kik.sprawdzWygrana(GRACZ1))
+					{
+						kik.zakonczGre();
+						DrawString(sdl.screen.getPtr(), SCREEN_WIDTH / 2 - 50, SCREEN_HEIGHT / 2, "Wygral gracz O", sdl.charset->getPtr());
+					}
+
+					kik.zwieksz_runde();
+					kik.zmienGracza();
+				}
+
+
+			}
+		}
+
 		
 		sdl.nextFrame();
 	} // while end
