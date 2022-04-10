@@ -11,6 +11,7 @@
 #include "mechanikaGry.h"
 #include "KolkoIKrzyzyk.h"
 #include "SdlStruct.h"
+#include <vector>
 
 using namespace std;
 
@@ -52,13 +53,13 @@ int main(int argc, char **argv)
 	Surface kursor("cursor.cur");
 	Surface kolo("./kolo.png");
 
-	rysuj_plansze(sdl, plansza);
+	vector<string> napisy;
 
 	// main loop of the game
 	bool quit = false;
 	while(quit == false)
 	{		
-		
+		rysuj_plansze(sdl, plansza);
 
 		for (int i = 0; i < 3; i++)
 			for (int j = 0; j < 3; j++)
@@ -67,6 +68,8 @@ int main(int argc, char **argv)
 				else if (kik.wartoscPola(i, j) == GRACZ2)
 					postaw_x(j, i, sdl.screen);
 
+		for (int i = 0; i < napisy.size(); i++)
+			DrawString(sdl.screen.getPtr(), SCREEN_WIDTH / 2 - 23, SCREEN_HEIGHT / 2, napisy[i].c_str(), sdl.charset->getPtr());
 
 		DrawSurface(sdl.screen.getPtr(), kursor.getPtr(), sdl.mx, sdl.my);
 
@@ -86,20 +89,17 @@ int main(int argc, char **argv)
 					{
 					case SDL_BUTTON_LEFT:
 
-						//if (czy_gra_trwa)
 						if (kik.czyGraTrwa())
 						{
 							if (kik.czyX()) // ruch x
 							{
-								//if (wstaw_do_tab(GRACZ2, x_i_o, mx, my))
 								if (kik.wstawDoTab(GRACZ2, sdl.mx, sdl.my))
 								{
-									//if (sprawdz_wygrana(x_i_o, GRACZ2))
 									if (kik.sprawdzWygrana(GRACZ2))
 									{
-										//czy_gra_trwa = false;
 										kik.zakonczGre();
-										DrawString(sdl.screen.getPtr(), SCREEN_WIDTH / 2 - 50, SCREEN_HEIGHT / 2, "Wygral gracz X", sdl.charset->getPtr());
+										napisy.clear();
+										napisy.push_back("Wygral gracz X");
 									}
 
 									kik.zwieksz_runde();
@@ -112,12 +112,6 @@ int main(int argc, char **argv)
 
 							
 								
-						}
-
-						if (kik.czyGraTrwa() && kik.ktora_runda() == 9)
-						{
-								kik.zakonczGre();
-								DrawString(sdl.screen.getPtr(), SCREEN_WIDTH / 2 - 23, SCREEN_HEIGHT / 2, "REMIS", sdl.charset->getPtr());
 						}
 
 						break;
@@ -136,6 +130,7 @@ int main(int argc, char **argv)
 					{
 						kik.restart();
 						SDL_FillRect(sdl.screen.getPtr(), NULL, sdl.czarny);
+						napisy.clear();
 					}
 
 
@@ -157,7 +152,9 @@ int main(int argc, char **argv)
 					if (kik.sprawdzWygrana(GRACZ1))
 					{
 						kik.zakonczGre();
-						DrawString(sdl.screen.getPtr(), SCREEN_WIDTH / 2 - 50, SCREEN_HEIGHT / 2, "Wygral gracz O", sdl.charset->getPtr());
+						napisy.clear();
+						napisy.push_back("Wygral gracz O");
+
 					}
 
 					kik.zwieksz_runde();
@@ -166,6 +163,14 @@ int main(int argc, char **argv)
 
 
 			}
+		}
+
+
+		if (kik.czyGraTrwa() && kik.ktora_runda() == 9)
+		{
+			kik.zakonczGre();
+			napisy.clear();
+			napisy.push_back("REMIS");
 		}
 
 		
