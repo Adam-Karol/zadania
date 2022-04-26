@@ -9,7 +9,7 @@ using namespace std;
 
 KolkoIKrzyzyk::KolkoIKrzyzyk()
 {
-
+	srand(time(0)); // seed rand - ziarno losowania
 }
 
 int KolkoIKrzyzyk::wartoscPola(int i, int j)

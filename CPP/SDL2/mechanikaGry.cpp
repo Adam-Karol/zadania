@@ -1,7 +1,7 @@
 #include "mechanikaGry.h"
 #include "stale.h"
 
-void postaw_x(int x, int y, Surface& plansza)
+void rysuj_x(int x, int y, Surface& plansza)
 {
 	int szerokosc_pola = SCREEN_WIDTH / 3;
 	int wysokosc_pola = SCREEN_HEIGHT / 3;
@@ -61,7 +61,7 @@ void postaw_x(int x, int y, Surface& plansza)
 
 
 
-void postaw_o(int x, int y, Surface& plansza, Surface& kolo)
+void rysuj_o(int x, int y, Surface& plansza, Surface& kolo)
 {
 	int szerokosc_pola = SCREEN_WIDTH / 3;
 	int wysokosc_pola = SCREEN_HEIGHT / 3;

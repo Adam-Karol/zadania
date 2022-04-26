@@ -8,7 +8,6 @@ class KolkoIKrzyzyk
 {
 private:
 	int plansza[3][3] = { {PUSTE, PUSTE, PUSTE}, {PUSTE, PUSTE, PUSTE}, {PUSTE, PUSTE, PUSTE}};
-	//int gracz = GRACZ1;
 	bool gra_w_trakcie = true;
 	int ile_rund = 0;
 	bool ruch_x = false;

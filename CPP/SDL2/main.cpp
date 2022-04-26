@@ -40,13 +40,156 @@ void rysuj_plansze(SdlStruct &sdl, Surface &plansza)
 	DrawLine(sdl.screen.getPtr(), 0, 2 * (SCREEN_HEIGHT / 3) + 2, SCREEN_WIDTH, 1, 0, sdl.czarny);
 }
 
+void rysuj_o_i_x(SdlStruct& sdl, Surface& kolo, KolkoIKrzyzyk& kik)
+{
+	for (int i = 0; i < 3; i++)
+		for (int j = 0; j < 3; j++)
+			if (kik.wartoscPola(i, j) == GRACZ1)
+				rysuj_o(j, i, sdl.screen, kolo);
+			else if (kik.wartoscPola(i, j) == GRACZ2)
+				rysuj_x(j, i, sdl.screen);
+}
+
+void rysuj_napisy(vector<string>& napisy, SdlStruct& sdl)
+{
+	for (int i = 0; i < napisy.size(); i++)
+		DrawString(sdl.screen.getPtr(), SCREEN_WIDTH / 2 - 23, SCREEN_HEIGHT / 2.5 + i*12, napisy[i].c_str(), sdl.charset->getPtr());
+}
+
+void rysuj_kursor(SdlStruct& sdl, Surface& kursor)
+{
+	DrawSurface(sdl.screen.getPtr(), kursor.getPtr(), sdl.mx, sdl.my);
+}
+
+void obslugaZdarzen(SdlStruct& sdl, KolkoIKrzyzyk& kik, bool quit, vector<string>& napisy)
+{
+	// obs³uga zdarzeñ (o ile jakieœ zasz³y) / handling of events (if there were any)
+	SDL_Event event;
+	while(SDL_PollEvent(&event))
+	{
+		sdl.wezPozycjeMyszki(event);
+
+		switch(event.type)
+		{
+			case SDL_MOUSEBUTTONDOWN:
+				switch (event.button.button)
+				{
+				case SDL_BUTTON_LEFT:
+
+					if (kik.czyGraTrwa())
+					{
+						if (kik.czyX()) // ruch x
+						{
+							if (kik.wstawDoTab(GRACZ2, sdl.mx, sdl.my))
+							{
+								if (kik.sprawdzWygrana(GRACZ2))
+								{
+									kik.zakonczGre();
+									//napisy.clear();
+									napisy.push_back("Wygral gracz X");
+								}
+
+								kik.zwieksz_runde();
+								kik.zmienGracza();
+
+							}
+
+
+						}
+
+							
+								
+					}
+
+					break;
+
+
+				}
+				break;
+
+			case SDL_KEYDOWN:
+
+				if(event.key.keysym.sym == SDLK_SPACE)
+					quit = true;
+
+					
+				if (event.key.keysym.sym == SDLK_r)
+				{
+					kik.restart();
+					SDL_FillRect(sdl.screen.getPtr(), NULL, sdl.czarny);
+					napisy.clear();
+				}
+
+
+				break;
+
+			case SDL_QUIT:
+				quit = true;
+				break;
+		}
+	}
+
+}
+
+void mechanika_gry(KolkoIKrzyzyk& kik, vector<string>& napisy)
+{
+	if (kik.czyGraTrwa())
+	{
+		if (!kik.czyX()) // ruch o - robota
+		{
+			if (kik.wstawDoTabSI(GRACZ1))
+			{
+				if (kik.sprawdzWygrana(GRACZ1))
+				{
+					kik.zakonczGre();
+					napisy.push_back("Wygral gracz O");
+				}
+
+				kik.zwieksz_runde();
+				kik.zmienGracza();
+			}
+
+		}
+	
+		if (kik.ktora_runda() == 9)
+		{
+			kik.zakonczGre();
+			napisy.push_back("REMIS");
+		}
+	}
+}
+
+void glowaPetlaGry(SdlStruct& sdl, Surface& plansza, Surface& kursor, Surface& kolo, KolkoIKrzyzyk& kik, vector<string>& napisy)
+{
+	bool quit = false;
+
+	while(quit == false)
+	{
+		rysuj_plansze(sdl, plansza);
+
+		rysuj_o_i_x(sdl, kolo, kik);
+
+		rysuj_napisy(napisy, sdl);
+
+		rysuj_kursor(sdl, kursor);
+
+		sdl.ticks();
+
+		sdl.updateTextureAndRender();
+
+		obslugaZdarzen(sdl, kik, quit, napisy);
+		
+		mechanika_gry(kik, napisy);
+		
+		sdl.nextFrame();
+	} // while end
+
+}
+
 int main(int argc, char **argv)
 {
-	KolkoIKrzyzyk kik;
-
-	srand(time(0)); // seed rand
-
-	SdlStruct sdl;
+	KolkoIKrzyzyk kik; // Odpowiedzialne za logikê gry. Model.
+	SdlStruct sdl; // Odpowiedzialne za rysowanie okna. Widok.
 	sdl.uruchom();
 
 	Surface plansza("./plansza.bmp");
@@ -54,129 +197,8 @@ int main(int argc, char **argv)
 	Surface kolo("./kolo.png");
 
 	vector<string> napisy;
-
-	// main loop of the game
-	bool quit = false;
-	while(quit == false)
-	{		
-		rysuj_plansze(sdl, plansza);
-
-		for (int i = 0; i < 3; i++)
-			for (int j = 0; j < 3; j++)
-				if (kik.wartoscPola(i, j) == GRACZ1)
-					postaw_o(j, i, sdl.screen, kolo);
-				else if (kik.wartoscPola(i, j) == GRACZ2)
-					postaw_x(j, i, sdl.screen);
-
-		for (int i = 0; i < napisy.size(); i++)
-			DrawString(sdl.screen.getPtr(), SCREEN_WIDTH / 2 - 23, SCREEN_HEIGHT / 2, napisy[i].c_str(), sdl.charset->getPtr());
-
-		DrawSurface(sdl.screen.getPtr(), kursor.getPtr(), sdl.mx, sdl.my);
-
-		sdl.ticks();
-		sdl.updateTextureAndRender();
-
-		// obs³uga zdarzeñ (o ile jakieœ zasz³y) / handling of events (if there were any)
-		SDL_Event event;
-		while(SDL_PollEvent(&event))
-		{
-			sdl.wezPozycjeMyszki(event);
-
-			switch(event.type)
-			{
-				case SDL_MOUSEBUTTONDOWN:
-					switch (event.button.button)
-					{
-					case SDL_BUTTON_LEFT:
-
-						if (kik.czyGraTrwa())
-						{
-							if (kik.czyX()) // ruch x
-							{
-								if (kik.wstawDoTab(GRACZ2, sdl.mx, sdl.my))
-								{
-									if (kik.sprawdzWygrana(GRACZ2))
-									{
-										kik.zakonczGre();
-										napisy.clear();
-										napisy.push_back("Wygral gracz X");
-									}
-
-									kik.zwieksz_runde();
-									kik.zmienGracza();
-
-								}
-
-
-							}
-
-							
-								
-						}
-
-						break;
-
-
-					}
-					break;
-
-				case SDL_KEYDOWN:
-
-					if(event.key.keysym.sym == SDLK_SPACE)
-						quit = true;
-
-					
-					if (event.key.keysym.sym == SDLK_r)
-					{
-						kik.restart();
-						SDL_FillRect(sdl.screen.getPtr(), NULL, sdl.czarny);
-						napisy.clear();
-					}
-
-
-					break;
-
-				case SDL_QUIT:
-					quit = true;
-					break;
-			}
-		}
-
-		if (kik.czyGraTrwa())
-		{
-			if (!kik.czyX()) // ruch o
-			{
-				//if (kik.wstawDoTab(GRACZ1, sdl.mx, sdl.my))
-				if (kik.wstawDoTabSI(GRACZ1))
-				{
-					if (kik.sprawdzWygrana(GRACZ1))
-					{
-						kik.zakonczGre();
-						napisy.clear();
-						napisy.push_back("Wygral gracz O");
-
-					}
-
-					kik.zwieksz_runde();
-					kik.zmienGracza();
-				}
-
-
-			}
-		}
-
-
-		if (kik.czyGraTrwa() && kik.ktora_runda() == 9)
-		{
-			kik.zakonczGre();
-			napisy.clear();
-			napisy.push_back("REMIS");
-		}
-
-		
-		sdl.nextFrame();
-	} // while end
-
+ 
+	glowaPetlaGry(sdl, plansza, kursor, kolo, kik, napisy);
 
 	return 0;
 }
