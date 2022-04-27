@@ -29,10 +29,10 @@ bool KolkoIKrzyzyk::wstawDoTab(int gracz, int mx, int my)
 	if (this->plansza[ind.j][ind.i] != PUSTE)
 		return false;
 
-	if (gracz == 1)
-		this->plansza[ind.j][ind.i] = GRACZ1;
+	if (gracz == GRACZ_O)
+		this->plansza[ind.j][ind.i] = GRACZ_O;
 	else
-		this->plansza[ind.j][ind.i] = GRACZ2;
+		this->plansza[ind.j][ind.i] = GRACZ_X;
 
 	return true;
 }
@@ -52,10 +52,10 @@ bool KolkoIKrzyzyk::wstawDoTabSI(int gracz)
 	if (this->plansza[ind.j][ind.i] != PUSTE)
 		return false;
 
-	if (gracz == 1)
-		this->plansza[ind.j][ind.i] = GRACZ1;
+	if (gracz == GRACZ_O)
+		this->plansza[ind.j][ind.i] = GRACZ_O;
 	else
-		this->plansza[ind.j][ind.i] = GRACZ2;
+		this->plansza[ind.j][ind.i] = GRACZ_X;
 
 	return true;
 }
@@ -91,14 +91,14 @@ int KolkoIKrzyzyk::ktora_runda()
 	return this->ile_rund;
 }
 
-bool KolkoIKrzyzyk::czyX()
+bool KolkoIKrzyzyk::czyO()
 {
-	return ruch_x;
+	return ruch_o;
 }
 
 void KolkoIKrzyzyk::zmienGracza()
 {
-	this->ruch_x = ! this->ruch_x;
+	this->ruch_o = ! this->ruch_o;
 }
 
 
@@ -111,9 +111,9 @@ void KolkoIKrzyzyk::restart()
 			plansza[i][j] = PUSTE;
 		}
 	}
-	//gracz = GRACZ1;
+	//gracz = GRACZ_O;
 	gra_w_trakcie = true;
 	ile_rund = 0;
-	ruch_x = false;
+	ruch_o = true;
 
 }

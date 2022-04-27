@@ -10,7 +10,7 @@ private:
 	int plansza[3][3] = { {PUSTE, PUSTE, PUSTE}, {PUSTE, PUSTE, PUSTE}, {PUSTE, PUSTE, PUSTE}};
 	bool gra_w_trakcie = true;
 	int ile_rund = 0;
-	bool ruch_x = false;
+	bool ruch_o = true;
 
 public:
 	KolkoIKrzyzyk();
@@ -22,7 +22,7 @@ public:
 	void zakonczGre();
 	void zwieksz_runde();
 	int ktora_runda();
-	bool czyX();
+	bool czyO();
 	void zmienGracza();
 	void restart();
 
