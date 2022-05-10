@@ -1,4 +1,5 @@
 #include "kontroler.h"
+#include <iostream>
 
 
 void rysuj_plansze(SdlStruct &sdl, Surface &plansza)
@@ -43,7 +44,7 @@ void rysuj_kursor(SdlStruct& sdl, Surface& kursor)
 	DrawSurface(sdl.screen.getPtr(), kursor.getPtr(), sdl.mx, sdl.my);
 }
 
-void ruchGracza(KolkoIKrzyzyk& kik, vector<string>& napisy, SdlStruct& sdl, int gracz)
+void ruchGracza(KolkoIKrzyzyk& kik, vector<string>& napisy, SdlStruct& sdl, int gracz, double& czas)
 {
 	bool warunek = gracz == GRACZ_O;
 
@@ -58,13 +59,18 @@ void ruchGracza(KolkoIKrzyzyk& kik, vector<string>& napisy, SdlStruct& sdl, int 
 			if (warunek)
 				poprawnyRuch = kik.wstawDoTab(gracz, sdl.mx, sdl.my);
 			else
-				poprawnyRuch = kik.wstawDoTabSI(gracz);
-
+			{
+				if (sdl.worldTime > czas + 0.25)
+					poprawnyRuch = kik.wstawDoTabSI(gracz);
+			}
+		
 			if (poprawnyRuch)
 			{
+				if (warunek)
+					czas = sdl.worldTime;
+
 				if (kik.sprawdzWygrana(gracz))
 				{
-					
 					kik.zakonczGre();
 
 					napisy.push_back(warunek ? "Wygral gracz O" :  "Wygral gracz X");
@@ -77,12 +83,12 @@ void ruchGracza(KolkoIKrzyzyk& kik, vector<string>& napisy, SdlStruct& sdl, int 
 	}
 }
 
-void klikMyszka(SDL_Event& event, KolkoIKrzyzyk& kik, SdlStruct& sdl, vector<string>& napisy)
+void klikMyszka(SDL_Event& event, KolkoIKrzyzyk& kik, SdlStruct& sdl, vector<string>& napisy, double& czas)
 {
 	switch (event.button.button)
 	{
 	case SDL_BUTTON_LEFT:
-		ruchGracza(kik, napisy, sdl, GRACZ_O);
+		ruchGracza(kik, napisy, sdl, GRACZ_O, czas);
 		break;
 	}
 }
@@ -101,7 +107,7 @@ void klawisz(SDL_Event& event, KolkoIKrzyzyk& kik, SdlStruct& sdl, bool& quit, v
 	}
 }
 
-void obslugaZdarzen(SdlStruct& sdl, KolkoIKrzyzyk& kik, bool& quit, vector<string>& napisy)
+void obslugaZdarzen(SdlStruct& sdl, KolkoIKrzyzyk& kik, bool& quit, vector<string>& napisy, double& czas)
 {
 	// obs³uga zdarzeñ (o ile jakieœ zasz³y) / handling of events (if there were any)
 	SDL_Event event;
@@ -112,7 +118,7 @@ void obslugaZdarzen(SdlStruct& sdl, KolkoIKrzyzyk& kik, bool& quit, vector<strin
 		switch(event.type)
 		{
 			case SDL_MOUSEBUTTONDOWN:
-				klikMyszka(event, kik, sdl, napisy);
+				klikMyszka(event, kik, sdl, napisy, czas);
 				break;
 
 			case SDL_KEYDOWN:
@@ -127,8 +133,6 @@ void obslugaZdarzen(SdlStruct& sdl, KolkoIKrzyzyk& kik, bool& quit, vector<strin
 
 }
 
-
-
 void sprRemis(KolkoIKrzyzyk& kik, vector<string>& napisy)
 {
 	// Musi byæ sprawdzenie czy gra trwa.
@@ -139,13 +143,11 @@ void sprRemis(KolkoIKrzyzyk& kik, vector<string>& napisy)
 	}
 }
 
-void mechanika_gry(KolkoIKrzyzyk& kik, vector<string>& napisy, SdlStruct& sdl)
+void mechanika_gry(KolkoIKrzyzyk& kik, vector<string>& napisy, SdlStruct& sdl, double& czas)
 {
-	//ruchO(kik, napisy);
-	ruchGracza(kik, napisy, sdl, GRACZ_X);
+	ruchGracza(kik, napisy, sdl, GRACZ_X, czas);
 
 	sprRemis(kik, napisy);
-
 }
 
 void glowaPetlaGry(SdlStruct& sdl, Surface& plansza, Surface& kursor, Surface& kolo, KolkoIKrzyzyk& kik, vector<string>& napisy)
@@ -153,7 +155,7 @@ void glowaPetlaGry(SdlStruct& sdl, Surface& plansza, Surface& kursor, Surface& k
 	bool quit = false;
 
 	//cout << endl << "czyX: " << kik.czyO() << endl;
-
+	double czas;
 	while(quit == false)
 	{
 		rysuj_plansze(sdl, plansza);
@@ -168,9 +170,11 @@ void glowaPetlaGry(SdlStruct& sdl, Surface& plansza, Surface& kursor, Surface& k
 
 		sdl.updateTextureAndRender();
 
-		obslugaZdarzen(sdl, kik, quit, napisy);
+		std::cout << sdl.worldTime << std::endl;
+
+		obslugaZdarzen(sdl, kik, quit, napisy, czas);
 		
-		mechanika_gry(kik, napisy, sdl);
+		mechanika_gry(kik, napisy, sdl, czas);
 		
 		sdl.nextFrame();
 	} // while end

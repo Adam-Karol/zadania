@@ -67,7 +67,7 @@ void SdlStruct::uruchom()
 // w tym momencie t2-t1 to czas w milisekundach,
 // jaki uplyna³ od ostatniego narysowania ekranu
 // delta to ten sam czas w sekundach
-double SdlStruct::delta()
+double SdlStruct::delta() // delta - zmianê wartoœci 
 {
 	return (this->t2 - this->t1) * 0.001;
 }
@@ -76,9 +76,9 @@ void SdlStruct::ticks()
 {
 	this->t2 = SDL_GetTicks();
 
-	this->t1 = this->t2;
-
 	this->worldTime += this->delta();
+
+	this->t1 = this->t2;
 
 	this->fpsTimer += this->delta();
 
