@@ -1,6 +1,7 @@
 #pragma once
 
 #include "stale.h"
+#include "Indeksy.h"
 
 // Deklaracje pól i metod klasy.
 
@@ -25,5 +26,7 @@ public:
 	bool czyO();
 	void zmienGracza();
 	void restart();
-
+	Indeksy wybierz_indeksy();
+	int wartosc_planszy(Indeksy wylosowane_indeksy);
+	int wartosc_3pol(int wartosc1, int wartosc2, int wartosc3);
 };

@@ -60,7 +60,7 @@ void ruchGracza(KolkoIKrzyzyk& kik, vector<string>& napisy, SdlStruct& sdl, int 
 				poprawnyRuch = kik.wstawDoTab(gracz, sdl.mx, sdl.my);
 			else
 			{
-				if (sdl.worldTime > czas + 0.25)
+				if (sdl.worldTime > czas + czas_oczekiwania)
 					poprawnyRuch = kik.wstawDoTabSI(gracz);
 			}
 		
@@ -150,17 +150,25 @@ void mechanika_gry(KolkoIKrzyzyk& kik, vector<string>& napisy, SdlStruct& sdl, d
 	sprRemis(kik, napisy);
 }
 
+void rysuj_pasek_oczekiwania(SdlStruct& sdl, double czas)
+{
+	if (sdl.worldTime - czas <= czas_oczekiwania && sdl.worldTime > 1)
+		DrawRectangle(sdl.screen.getPtr(), SCREEN_WIDTH / 4, SCREEN_HEIGHT / 4, SCREEN_WIDTH / (2 * czas_oczekiwania) * (sdl.worldTime - czas), 10, sdl.czarny, sdl.czarny);
+}
+
 void glowaPetlaGry(SdlStruct& sdl, Surface& plansza, Surface& kursor, Surface& kolo, KolkoIKrzyzyk& kik, vector<string>& napisy)
 {
 	bool quit = false;
 
 	//cout << endl << "czyX: " << kik.czyO() << endl;
-	double czas;
+	double czas = 0;
 	while(quit == false)
 	{
 		rysuj_plansze(sdl, plansza);
 
 		rysuj_o_i_x(sdl, kolo, kik);
+
+		rysuj_pasek_oczekiwania(sdl, czas);
 
 		rysuj_napisy(napisy, sdl);
 
@@ -170,7 +178,8 @@ void glowaPetlaGry(SdlStruct& sdl, Surface& plansza, Surface& kursor, Surface& k
 
 		sdl.updateTextureAndRender();
 
-		std::cout << sdl.worldTime << std::endl;
+		//std::cout << sdl.worldTime << " " << sdl.worldTime - czas << " " << sdl.fps << " " << sdl.fpsTimer << " " << sdl.frames / sdl.worldTime << std::endl;
+
 
 		obslugaZdarzen(sdl, kik, quit, napisy, czas);
 		
