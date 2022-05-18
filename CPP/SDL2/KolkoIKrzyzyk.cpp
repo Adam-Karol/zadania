@@ -98,7 +98,6 @@ int KolkoIKrzyzyk::wartosc_planszy(Indeksy wylosowane_indeksy)
 
 	kopia[wylosowane_indeksy.j][wylosowane_indeksy.i] = GRACZ_X;
 
-	//cout << kopia << endl;
 
 	int wynik = 0;
 
@@ -118,7 +117,6 @@ Indeksy losuj_indeksy()
 {
 	Indeksy wylosowane(random(0, 3), random(0, 3));
 
-	/*cout << wylosowane.i << " " << wylosowane.j << endl;*/
 	return wylosowane;
 }
 
@@ -178,7 +176,6 @@ Indeksy KolkoIKrzyzyk::wybierz_indeksy()
 
 bool KolkoIKrzyzyk::wstawDoTabSI(int gracz)
 {
-	cout << "ZACZALEM" << endl;
 	Indeksy ind = wybierz_indeksy();
 
 	if (this->plansza[ind.j][ind.i] != PUSTE)
@@ -189,7 +186,6 @@ bool KolkoIKrzyzyk::wstawDoTabSI(int gracz)
 	else
 		this->plansza[ind.j][ind.i] = GRACZ_X;
 
-	cout << "GOTOWE" << endl;
 	return true;
 }
 

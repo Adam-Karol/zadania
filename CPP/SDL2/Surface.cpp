@@ -13,6 +13,7 @@ Surface::Surface(string bmpfile)
 	if(ptr == NULL)
 		throw exception("IMG_Load failed.");
 }
+
 Surface::Surface()
 {
 	ptr = NULL;

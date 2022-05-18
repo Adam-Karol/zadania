@@ -5,7 +5,6 @@
 #include <string>
 #include "stale.h"
 #include "KolkoIKrzyzyk.h"
-#include "mechanikaGry.h"
 
 using namespace std;
 
@@ -20,3 +19,6 @@ void obslugaZdarzen(SdlStruct& sdl, KolkoIKrzyzyk& kik, bool& quit, vector<strin
 void sprRemis(KolkoIKrzyzyk& kik, vector<string>& napisy);
 void mechanika_gry(KolkoIKrzyzyk& kik, vector<string>& napisy, SdlStruct& sdl, double& czas);
 void glowaPetlaGry(SdlStruct& sdl, Surface& plansza, Surface& kursor, Surface& kolo, KolkoIKrzyzyk& kik, vector<string>& napisy);
+
+void rysuj_x(int x, int y, Surface& plansza);
+void rysuj_o(int x, int y, Surface& plansza, Surface& kolo);
