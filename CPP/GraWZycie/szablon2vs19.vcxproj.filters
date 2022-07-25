@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="functions.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="drawing.cpp">
+      <Filter>rysowanie</Filter>
+    </ClCompile>
+    <ClCompile Include="Surface.cpp">
+      <Filter>rysowanie</Filter>
+    </ClCompile>
+    <ClCompile Include="mechanikaGry.cpp">
+      <Filter>gra</Filter>
+    </ClCompile>
+    <ClCompile Include="Indeksy.cpp">
+      <Filter>gra</Filter>
+    </ClCompile>
+    <ClCompile Include="KolkoIKrzyzyk.cpp">
+      <Filter>gra</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="functions.h" />
+    <ClInclude Include="drawing.h">
+      <Filter>rysowanie</Filter>
+    </ClInclude>
+    <ClInclude Include="Surface.h">
+      <Filter>rysowanie</Filter>
+    </ClInclude>
+    <ClInclude Include="mechanikaGry.h">
+      <Filter>gra</Filter>
+    </ClInclude>
+    <ClInclude Include="Indeksy.h">
+      <Filter>gra</Filter>
+    </ClInclude>
+    <ClInclude Include="stale.h" />
+    <ClInclude Include="KolkoIKrzyzyk.h">
+      <Filter>gra</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="cs8x8.bmp" />
+    <Image Include="eti.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="rysowanie">
+      <UniqueIdentifier>{7ee04e79-6864-4cf3-b44b-fa833dbb4894}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gra">
+      <UniqueIdentifier>{32838f52-9cdd-40c1-a364-31152eb6ef08}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
