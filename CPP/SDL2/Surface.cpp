@@ -14,14 +14,27 @@ Surface::Surface(string bmpfile)
 		throw exception("IMG_Load failed.");
 }
 
+Surface::Surface()
+{
+	ptr = NULL;
+}
+
 // Metoda zwaracaj¹ca oryginalny wskaŸnik.
 SDL_Surface* Surface::getPtr()
 {
 	return ptr;
 }
 
+void Surface::setPtr(SDL_Surface *ptr)
+{
+	this->ptr = ptr;
+}
+
 // Destruktor.
 Surface::~Surface()
 {
-	SDL_FreeSurface(this->ptr);
+	if (ptr != NULL)
+	{
+		SDL_FreeSurface(this->ptr);
+	}
 }

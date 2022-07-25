@@ -16,9 +16,13 @@ private:
 public:
 	// Konstruktor.
 	Surface(string bmpfile);
+	Surface();
 
 	// Metoda zwaracajπca oryginalny wskaünik.
 	SDL_Surface* getPtr();
+
+	void setPtr(SDL_Surface *ptr);
+
 
 	// Destruktor.
 	~Surface();

@@ -13,3 +13,6 @@ release/
 *.db
 *.json
 *.vcxproj
+CPP/SDL2/szablon2vs19.vcxproj
+CPP/SDL2/.vs/szablon2vs19/v16/.suo
+CPP/SDL2/.vs/szablon2vs19/v16/Browse.VC.db
